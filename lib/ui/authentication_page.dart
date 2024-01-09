@@ -1,65 +1,27 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:show_you/data/models/user_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
+import 'package:show_you/services/cubit/authentication/authentication_cubit.dart';
+import 'package:show_you/services/cubit/authentication/authentication_state.dart';
+import 'package:show_you/ui/user_profile_page.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+class AuthenticatePage extends StatefulWidget {
+  const AuthenticatePage({Key? key}) : super(key: key);
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<AuthenticatePage> createState() => _SignUpState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignUpState extends State<AuthenticatePage> {
   TextEditingController t1 = TextEditingController();
   TextEditingController t2 = TextEditingController();
- 
+
   var incomingTitle = "";
   var incomingContent = "";
-
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
-  Future<UserModel?> signUp(String email,
-    String password,) async {
-     try {
-      final UserCredential userCredential =
-          await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email.trim(),
-        password: password.trim(),
-      );
-      final User? firebaseUser = userCredential.user;
-      if (firebaseUser != null) {
-        return UserModel(
-          id: firebaseUser.uid,
-          email: firebaseUser.email ?? '',
-          displayName: firebaseUser.displayName ?? '',
-        );
-      }
-    } on FirebaseAuthException catch (e) {
-      print(e.toString());
-    }
-    return null;
-    // try {
-    //   await FirebaseAuth.instance.createUserWithEmailAndPassword(email: t1.text, password: t2.text).then((kullanici) {
-    //     FirebaseFirestore.instance
-    //         .collection("user_information")
-    //         .doc(t1.text)
-    //         .set({'key1': t1.text, 'key2': t2.text}).whenComplete(() => print("Kullanıcı firestore veritabanına eklendi"));
-    //   });
-    // } on FirebaseAuthException catch (e) {
-    //   print('Failed with error code: ${e.code}');
-    //   print(e.message);
-    // }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.amber[100],
-        elevation: 0,
-        title: Text("LocaleKeys.signUpButton.tr()", style: Theme.of(context).textTheme.titleMedium),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(9.0),
         child: Container(
@@ -104,16 +66,39 @@ class _SignUpState extends State<SignUp> {
               const SizedBox(
                 height: 25,
               ),
-              ElevatedButton(
-                  onPressed: () {
-                     signUp(t1.text, t2.text);
-                    FocusManager.instance.primaryFocus?.unfocus();
-                  },
-                  child: Text('j'))
-              // ListTile(
-              //   title: Text(incomingTitle),
-              //   subtitle: Text(incomingContent),
-              // ),
+              BlocProvider<AuthCubit>(
+                  create: (context) => AuthCubit(),
+                  child: BlocListener<AuthCubit, AuthState>(
+                    listener: (context, state) async {
+                      if (state is SignUpCompleted) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const UserProfile()),
+                        );
+                      }
+                    },
+                    child: BlocBuilder<AuthCubit, AuthState>(
+                      builder: (context, state) {
+                        return Column(
+                          children: [
+                            state is SignUpFailed ? Text(state.errorMessage) : const SizedBox.shrink(),
+                            state is SignUpCompliting
+                                ? SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Lottie.asset(
+                                      'assets/lottie/loading_animation.json',
+                                      fit: BoxFit.fill,
+                                    ),
+                                  )
+                                : const SizedBox.shrink(),
+                            ElevatedButton(onPressed: () => context.read<AuthCubit>().signUpUser(t1.text, t2.text), child: Text('Sign Up')),
+                            ElevatedButton(onPressed: () => context.read<AuthCubit>().signInUser(t1.text, t2.text), child: Text('Sign in')),
+                          ],
+                        );
+                      },
+                    ),
+                  ))
             ],
           )),
         ),
