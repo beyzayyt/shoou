@@ -3,5 +3,6 @@ class UserModel {
   final String email;
   final String displayName;
   final String errorMessage;
-  UserModel({this.id = '', this.email = '', this.displayName = '', this.errorMessage = ''});
+  final bool isNewUser;
+  UserModel({this.id = '', this.email = '', this.displayName = '', this.errorMessage = '', this.isNewUser = false});
 }

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:show_you/services/cubit/authentication/authentication_cubit.dart';
 import 'package:show_you/services/cubit/authentication/authentication_state.dart';
-import 'package:show_you/ui/user_profile_page.dart';
+import 'package:show_you/ui/user_profile_form_page.dart';
 
 class AuthenticatePage extends StatefulWidget {
   const AuthenticatePage({Key? key}) : super(key: key);
@@ -70,10 +70,16 @@ class _SignUpState extends State<AuthenticatePage> {
                   create: (context) => AuthCubit(),
                   child: BlocListener<AuthCubit, AuthState>(
                     listener: (context, state) async {
-                      if (state is SignUpCompleted) {
+                      if (state is SignUpCompleted || state is SignInCompleted) {
+                        if (state is SignUpCompleted && state.user.isNewUser) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(content: Text("Please add your several informations and let us know you!")));
+                        }
+
+                        // If user get success from sign up or sign in, navigate to account page.
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const UserProfile()),
+                          MaterialPageRoute(builder: (context) => const UserProfileFormPage()),
                         );
                       }
                     },

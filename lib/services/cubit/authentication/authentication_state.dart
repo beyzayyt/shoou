@@ -1,3 +1,4 @@
+import 'package:show_you/data/models/user_model.dart';
 
 class AuthState {
   AuthState();
@@ -8,7 +9,7 @@ class SignUpInitial extends AuthState {}
 class SignUpCompliting extends AuthState {}
 
 class SignUpCompleted extends AuthState {
-  final String user;
+  final UserModel user;
   SignUpCompleted(this.user);
 
   List<Object> get props => [user];

@@ -19,6 +19,7 @@ class AuthService {
       if (firebaseUser != null) {
         await signIn(email.trim(), password.trim());
         return UserModel(
+          isNewUser: true,
           id: firebaseUser.uid,
           email: firebaseUser.email ?? '',
           displayName: firebaseUser.displayName ?? '',
@@ -38,19 +39,18 @@ class AuthService {
 
   Future<UserModel> signIn(String email, String password) async {
     try {
-       if (firebaseUser != null) {
-       UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-      final User? firebaseUser = userCredential.user;
-      return UserModel(
+      if (firebaseUser != null) {
+        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+        final User? firebaseUser = userCredential.user;
+        return UserModel(
           id: firebaseUser!.uid,
           email: firebaseUser.email ?? '',
           displayName: firebaseUser.displayName ?? '',
         );
-    }
-    } on FirebaseAuthException catch(e) {
+      }
+    } on FirebaseAuthException catch (e) {
       return UserModel(errorMessage: e.message!);
     }
     return UserModel();
-   
   }
 }

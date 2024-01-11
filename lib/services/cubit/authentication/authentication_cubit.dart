@@ -14,7 +14,7 @@ class AuthCubit extends Cubit<AuthState> {
       var userResult = await authService.signUp(email, password);
 
       if (userResult.id.isNotEmpty) {
-        emit(SignUpCompleted(userResult.id));
+        emit(SignUpCompleted(userResult));
       } else {
         emit(SignUpFailed(userResult.errorMessage));
       }

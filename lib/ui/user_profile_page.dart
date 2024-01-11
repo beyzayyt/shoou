@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-class UserProfile extends StatelessWidget {
-  const UserProfile({super.key});
+class UserProfilePage extends StatelessWidget{
+  const UserProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Text("AAA");
+    return Container(child: Text("User Profile Page"),);
   }
-
 }
