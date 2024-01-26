@@ -13,8 +13,8 @@ class UserInformationCubit extends Cubit<UserInformationState> {
       emit(UserInformationCompliting());
       var savedUser = await userInfoService.userInformationService(userName, userLastName, userNickname, userMobilePhone, userBirthDate);
 
-      if (savedUser) {
-        emit(UserInformationCompleted());
+      if (savedUser.errorMessage.isEmpty) {
+        emit(UserInformationCompleted(savedUser));
       } else {
         emit(UserInformationFailed("userResult.errorMessage"));
       }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:show_you/services/cubit/userInfo/user_information_cubit.dart';
 import 'package:show_you/services/cubit/userInfo/user_information_state.dart';
-import 'package:show_you/ui/user_profile_page.dart';
 
 class UserProfileFormPage extends StatefulWidget {
   const UserProfileFormPage({super.key});
@@ -65,10 +64,7 @@ class _UserProfileState extends State<UserProfileFormPage> {
                   child: BlocListener<UserInformationCubit, UserInformationState>(
                     listener: (context, state) {
                       if (state is UserInformationCompleted) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const UserProfilePage()),
-                        );
+                        Navigator.pop(context, state.savedUser);
                       }
                     },
                     child: BlocBuilder<UserInformationCubit, UserInformationState>(
