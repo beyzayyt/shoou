@@ -1,39 +1,19 @@
-import 'package:show_you/data/models/saved_blog_model.dart';
-
-class UserBlogState {
-  UserBlogState();
+class UserShowBlogState {
+  UserShowBlogState();
 }
 
-class UserAddBlogInitial extends UserBlogState {}
+class ShowUserBlogInitial extends UserShowBlogState {}
 
-class UserAddBlogCompliting extends UserBlogState {}
+class ShowUserBlogCompliting extends UserShowBlogState {}
 
-class UserAddBlogCompleted extends UserBlogState {
-  final SavedBlog savedUser;
-  UserAddBlogCompleted(this.savedUser);
-
-  List<Object> get props => [];
-}
-
-class UserAddBlogFailed extends UserBlogState {
-  final String errorMessage;
-  UserAddBlogFailed(this.errorMessage);
-
-  List<Object> get props => [errorMessage];
-}
-
-class ShowUserBlogInitial extends UserBlogState {}
-
-class ShowUserBlogCompliting extends UserBlogState {}
-
-class ShowUserBlogCompleted extends UserBlogState {
+class ShowUserBlogCompleted extends UserShowBlogState {
   final List<Object?>? blogs;
   ShowUserBlogCompleted(this.blogs);
 
   List<Object> get props => [];
 }
 
-class ShowUserBlogFailed extends UserBlogState {
+class ShowUserBlogFailed extends UserShowBlogState {
   final String errorMessage;
   ShowUserBlogFailed(this.errorMessage);
 

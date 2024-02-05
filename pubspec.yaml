@@ -44,6 +44,7 @@ dependencies:
   lottie: ^2.7.0
   firebase_app_check: ^0.2.1+8
   flutter_svg: ^2.0.9
+  selectable_list: ^0.1.1
 
 dev_dependencies:
   flutter_test:

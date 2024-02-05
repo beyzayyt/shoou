@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:selectable_list/selectable_list.dart';
+import 'package:show_you/services/cubit/userBlog/user_add_blog_cubit.dart';
+import 'package:show_you/services/cubit/userBlog/user_add_blog_state.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_state.dart';
+import 'package:show_you/services/cubit/userBlog/user_clear_blog_cubit.dart';
+import 'package:show_you/services/cubit/userBlog/user_clear_blog_state.dart';
 
 class CreateBlogPage extends StatefulWidget {
   const CreateBlogPage({super.key});
@@ -12,19 +17,40 @@ class CreateBlogPage extends StatefulWidget {
 }
 
 class _CreateBlogPageState extends State<CreateBlogPage> {
-  bool resultState = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Blog")),
-      body: BlocProvider<UserBlogCubit>(
-        create: (context) => UserBlogCubit()..showUserBlog(),
-        child: BlocListener<UserBlogCubit, UserBlogState>(
-          listener: (context, state) {
-            
-          },
+      appBar: AppBar(
+        title: const Text("Blog"),
+        actions: const [],
+      ),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider<UserShowBlogCubit>(
+            create: (BuildContext context) => UserShowBlogCubit()..showUserBlog(),
+          ),
+          BlocProvider<UserClearBlogCubit>(
+            create: (BuildContext bcontext) => UserClearBlogCubit(),
+          ),
+          BlocProvider<UserAddBlogCubit>(
+            create: (BuildContext bcontext) => UserAddBlogCubit(),
+          ),
+        ],
+        child: MultiBlocListener(
+          listeners: [
+            BlocListener<UserClearBlogCubit, UserClearBlogState>(listener: (context, state) {
+              if (state is UserClearBlogItemCompleted) {
+                context.read<UserShowBlogCubit>().showUserBlog();
+                return;
+              }
+              if (state is UserClearBlogCompleted) {
+                context.read<UserShowBlogCubit>().showUserBlog();
+                return;
+              }
+            }),
+          ],
           child: Column(children: [
-            BlocBuilder<UserBlogCubit, UserBlogState>(
+            BlocConsumer<UserShowBlogCubit, UserShowBlogState>(
               builder: (context, state) {
                 if (state is ShowUserBlogCompliting) {
                   return SizedBox(
@@ -36,42 +62,57 @@ class _CreateBlogPageState extends State<CreateBlogPage> {
                     ),
                   );
                 } else if (state is ShowUserBlogCompleted && state.blogs != null) {
-                  return Wrap(
-                      children: state.blogs!.map((item) {
-                    Map<String, dynamic> data = item as Map<String, dynamic>;
-                    return Column(
-                      children: [
-                        Text(data['title'] ?? ''),
-                        Text(data['content'] ?? ''),
-                      ],
-                    );
-                  }).toList());
+                  return Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Wrap(
+                          direction: Axis.vertical,
+                          children: state.blogs!.map((item) {
+                            Map<String, dynamic> data = item as Map<String, dynamic>;
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  data['title'] ?? '',
+                                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  data['content'] ?? '',
+                                  style: const TextStyle(fontSize: 14),
+                                ),
+                              ],
+                            );
+                          }).toList()),
+                    ),
+                  );
                 } else {
                   return const Text("Trouble with blog");
                 }
               },
+              listener: (BuildContext context, UserShowBlogState state) {},
             ),
-            BlocProvider<UserBlogCubit>(
-              create: (context) => UserBlogCubit(),
-              child: BlocBuilder<UserBlogCubit, UserBlogState>(
-                builder: (context, state) {
-                  return ElevatedButton(
-                    onPressed: () async {
-                      var result = await Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => CreatePostPage()),
-                      );
-
-                      if (context.mounted && result == true) {
-                        // Refresh the blog list when returning from CreatePostPage
-                        await context.read<UserBlogCubit>().showUserBlog();
-                      }
-                    },
-                    child: const Text("Create blog"),
-                  );
-                },
-              ),
-            )
+            BlocBuilder<UserShowBlogCubit, UserShowBlogState>(builder: (context, state) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(onPressed: () => context.read<UserClearBlogCubit>().clearUserBlog(), child: const Text("Clear All Blogs")),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  ElevatedButton(
+                      onPressed: () async {
+                        var result = await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => CreatePostPage()),
+                        );
+                        if (context.mounted && result != null) context.read<UserShowBlogCubit>().showUserBlog();
+                      },
+                      child: const Text("Add New Blog")),
+                  ElevatedButton(onPressed: () => context.read<UserClearBlogCubit>().clearUserBlogItemService(0), child: const Text("Choose"))
+                ],
+              );
+            }),
           ]),
         ),
       ),
@@ -92,9 +133,9 @@ class CreatePostPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: BlocProvider<UserBlogCubit>(
-          create: (context) => UserBlogCubit(),
-          child: BlocListener<UserBlogCubit, UserBlogState>(
+        child: BlocProvider<UserAddBlogCubit>(
+          create: (context) => UserAddBlogCubit(),
+          child: BlocListener<UserAddBlogCubit, UserAddBlogState>(
             listener: (context, state) async {
               if (state is UserAddBlogCompleted) {
                 if (context.mounted) {
@@ -103,7 +144,7 @@ class CreatePostPage extends StatelessWidget {
                 return;
               }
             },
-            child: BlocBuilder<UserBlogCubit, UserBlogState>(
+            child: BlocBuilder<UserAddBlogCubit, UserAddBlogState>(
               builder: (context, state) {
                 return Column(
                   children: [
@@ -125,7 +166,7 @@ class CreatePostPage extends StatelessWidget {
                     const SizedBox(height: 16.0),
                     ElevatedButton(
                       onPressed: () async {
-                        await context.read<UserBlogCubit>().saveUserBlog(titleController.text, contentController.text);
+                        await context.read<UserAddBlogCubit>().addUserBlog(titleController.text, contentController.text);
                       },
                       child: const Text('Submit'),
                     ),
