@@ -31,10 +31,12 @@ class AuthService {
     return UserModel();
   }
 
-  Future<void> signOut() async {
+  Future<bool> signOut() async {
     if (firebaseUser != null) {
       await FirebaseAuth.instance.signOut();
+      return true;
     }
+    return false;
   }
 
   Future<UserModel> signIn(String email, String password) async {

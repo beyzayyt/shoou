@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
+import 'package:show_you/services/cubit/authentication/authentication_cubit.dart';
+import 'package:show_you/services/cubit/authentication/authentication_state.dart';
+import 'package:show_you/ui/authentication_page.dart';
 import 'package:show_you/ui/create_bloge_page.dart';
 import 'package:show_you/ui/user_profile_form_page.dart';
 
@@ -69,7 +73,28 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("Account Settings"),
+                    BlocProvider<AuthCubit>(
+                      create: (context) => AuthCubit(),
+                      child: BlocListener<AuthCubit, AuthState>(
+                        listener: (context, state) async {
+                          if (state is SignOutCompleted) {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const AuthenticatePage()),
+                            );
+                          }
+                        },
+                        child: BlocBuilder<AuthCubit, AuthState>(
+                          builder: (context, state) {
+                            return InkWell(
+                                onTap: () async {
+                                  await context.read<AuthCubit>().signOutUser();
+                                },
+                                child: const Text("Log out"));
+                          },
+                        ),
+                      ),
+                    ),
                     InkWell(
                       onTap: () async {
                         var result = await Navigator.push(

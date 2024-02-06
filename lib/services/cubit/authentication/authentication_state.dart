@@ -40,3 +40,21 @@ class SignInFailed extends AuthState {
 
   List<Object> get props => [errorMessage];
 }
+
+class SignOutInitial extends AuthState {}
+
+class SignOutCompliting extends AuthState {}
+
+class SignOutCompleted extends AuthState {
+  final bool isSignOut;
+  SignOutCompleted(this.isSignOut);
+
+  List<Object> get props => [isSignOut];
+}
+
+class SignOutFailed extends AuthState {
+  final String errorMessage;
+  SignOutFailed(this.errorMessage);
+
+  List<Object> get props => [errorMessage];
+}

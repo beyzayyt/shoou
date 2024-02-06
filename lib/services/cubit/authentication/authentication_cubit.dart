@@ -38,4 +38,20 @@ class AuthCubit extends Cubit<AuthState> {
       emit(SignInFailed('Sign in user failed'));
     }
   }
+
+  Future<void> signOutUser() async {
+    emit(SignOutInitial());
+    try {
+      emit(SignOutCompliting());
+      var result = await authService.signOut();
+
+      if (result) {
+        emit(SignOutCompleted(result));
+      } else {
+        emit(SignOutFailed("Sign out user failed"));
+      }
+    } catch (e) {
+      emit(SignOutFailed('Sign out user failed'));
+    }
+  }
 }
