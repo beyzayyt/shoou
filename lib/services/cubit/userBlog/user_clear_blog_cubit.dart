@@ -23,11 +23,11 @@ class UserClearBlogCubit extends Cubit<UserClearBlogState> {
     }
   }
 
-  Future<void> clearUserBlogItemService(int id) async {
+  Future<void> clearUserBlogItemService(List idList) async {
     emit(UserClearBlogItemInitial());
     try {
       emit(UserClearBlogItemCompliting());
-      var result = await userBlogService.clearUserBlogItemService(id);
+      var result = await userBlogService.clearUserBlogItemService(idList);
 
       if (result) {
         emit(UserClearBlogItemCompleted(result));

@@ -11,7 +11,9 @@ class BlogService {
         'title': title,
         'content': content,
       }).then((DocumentReference doc) => print('DocumentSnapshot added with ID: blog service ${doc.id}'));
+
       SavedBlog user = SavedBlog(title: title, content: content);
+
       return user;
     } on FirebaseAuthException catch (e) {
       return SavedBlog(errorMessage: e.message!);
@@ -20,16 +22,11 @@ class BlogService {
 
   Future<List<Object?>?> showUserBlogService() async {
     CollectionReference collection = FirebaseFirestore.instance.collection('userblog');
-
     try {
       QuerySnapshot querySnapshot = await collection.get();
-
-      // Get data from docs and convert map to List
       final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-      return allData.toList();
-    } on FirebaseAuthException catch (e) {
-      // return SavedBlog(errorMessage: e.message!);
-    }
+      return allData;
+    } on FirebaseAuthException catch (e) {}
     return null;
   }
 
@@ -38,7 +35,6 @@ class BlogService {
 
     try {
       var snapshots = await collection.get();
-      snapshots.docs[0].reference.delete();
       for (var doc in snapshots.docs) {
         await doc.reference.delete();
       }
@@ -48,12 +44,14 @@ class BlogService {
     }
   }
 
-  Future<bool> clearUserBlogItemService(int id) async {
+  Future<bool> clearUserBlogItemService(List idList) async {
     CollectionReference collection = FirebaseFirestore.instance.collection('userblog');
     try {
       var snapshots = await collection.get();
-      snapshots.docs[id].reference.delete();
 
+      for (var id in idList) {
+        await snapshots.docs[id].reference.delete();
+      }
       return true;
     } on FirebaseAuthException catch (e) {
       return false;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
-import 'package:selectable_list/selectable_list.dart';
 import 'package:show_you/services/cubit/userBlog/user_add_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_add_blog_state.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_cubit.dart';
@@ -17,6 +16,8 @@ class CreateBlogPage extends StatefulWidget {
 }
 
 class _CreateBlogPageState extends State<CreateBlogPage> {
+  bool isSelected = false;
+  List selectedList = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,24 +67,44 @@ class _CreateBlogPageState extends State<CreateBlogPage> {
                     padding: const EdgeInsets.all(24.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Wrap(
-                          direction: Axis.vertical,
-                          children: state.blogs!.map((item) {
-                            Map<String, dynamic> data = item as Map<String, dynamic>;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height / 1.5,
+                        child: ListView.builder(
+                          itemCount: state.blogs!.length,
+                          itemBuilder: (context, index) {
+                            Map<String, dynamic> data = state.blogs![index] as Map<String, dynamic>;
+                            return Row(
                               children: [
-                                Text(
-                                  data['title'] ?? '',
-                                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                                Checkbox(
+                                  value: selectedList.contains(index),
+                                  onChanged: (bool? newValue) {
+                                    setState(() {
+                                      if (newValue!) {
+                                        selectedList.add(index);
+                                      } else {
+                                        selectedList.remove(index);
+                                      }
+                                    });
+                                  },
                                 ),
-                                Text(
-                                  data['content'] ?? '',
-                                  style: const TextStyle(fontSize: 14),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      data['title'] ?? '',
+                                      style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      data['content'] ?? '',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                  ],
                                 ),
                               ],
                             );
-                          }).toList()),
+                          },
+                        ),
+                      ),
                     ),
                   );
                 } else {
@@ -93,23 +114,30 @@ class _CreateBlogPageState extends State<CreateBlogPage> {
               listener: (BuildContext context, UserShowBlogState state) {},
             ),
             BlocBuilder<UserShowBlogCubit, UserShowBlogState>(builder: (context, state) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              return Column(
                 children: [
-                  ElevatedButton(onPressed: () => context.read<UserClearBlogCubit>().clearUserBlog(), child: const Text("Clear All Blogs")),
-                  const SizedBox(
-                    width: 16,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(onPressed: () => context.read<UserClearBlogCubit>().clearUserBlog(), child: const Text("Clear All Blogs")),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      ElevatedButton(
+                          onPressed: () async {
+                            var result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => CreatePostPage()),
+                            );
+                            if (context.mounted && result != null) context.read<UserShowBlogCubit>().showUserBlog();
+                          },
+                          child: const Text("Add New Blog")),
+                    ],
                   ),
                   ElevatedButton(
-                      onPressed: () async {
-                        var result = await Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => CreatePostPage()),
-                        );
-                        if (context.mounted && result != null) context.read<UserShowBlogCubit>().showUserBlog();
-                      },
-                      child: const Text("Add New Blog")),
-                  ElevatedButton(onPressed: () => context.read<UserClearBlogCubit>().clearUserBlogItemService(0), child: const Text("Choose"))
+                      onPressed: () =>
+                          context.read<UserClearBlogCubit>().clearUserBlogItemService(selectedList).whenComplete(() => selectedList = []),
+                      child: const Text("Choose and delete item"))
                 ],
               );
             }),
