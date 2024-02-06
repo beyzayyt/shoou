@@ -107,7 +107,7 @@ class UserInformationTextField extends StatelessWidget {
             borderSide: BorderSide(color: Theme.of(context).primaryColor),
           ),
           enabledBorder:
-              OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor), borderRadius: BorderRadius.all(Radius.circular(10))),
+              OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor), borderRadius: const BorderRadius.all(Radius.circular(10))),
         ),
       ),
     );

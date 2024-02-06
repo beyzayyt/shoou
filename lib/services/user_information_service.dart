@@ -14,7 +14,7 @@ class UserInformationService {
         'userNickname': userNickname,
         'userMobilePhone': userMobilePhone,
         'userBirthDate': userBirthDate,
-      }).then((DocumentReference doc) => print('DocumentSnapshot added with ID: userinfo ${doc.id}'));
+      });
       SavedUserModel user = SavedUserModel(
           userName: userName, userLastName: userLastName, userNickname: userNickname, userMobilePhone: userMobilePhone, userBirthDate: userBirthDate);
       return user;

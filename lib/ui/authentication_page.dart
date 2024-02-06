@@ -42,7 +42,7 @@ class _SignUpState extends State<AuthenticatePage> {
                     borderSide: BorderSide(color: Theme.of(context).primaryColor),
                   ),
                   enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Theme.of(context).primaryColor), borderRadius: BorderRadius.all(Radius.circular(10))),
+                      borderSide: BorderSide(color: Theme.of(context).primaryColor), borderRadius: const BorderRadius.all(Radius.circular(10))),
                 ),
               ),
               const SizedBox(
@@ -55,12 +55,12 @@ class _SignUpState extends State<AuthenticatePage> {
                 obscureText: true,
                 decoration: InputDecoration(
                   hintText: "Password",
-                  hintStyle: Theme.of(context).textTheme.subtitle1,
+                  hintStyle: Theme.of(context).textTheme.titleMedium,
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Theme.of(context).primaryColor),
                   ),
                   enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Theme.of(context).primaryColor), borderRadius: BorderRadius.all(Radius.circular(10))),
+                      borderSide: BorderSide(color: Theme.of(context).primaryColor), borderRadius: const BorderRadius.all(Radius.circular(10))),
                 ),
               ),
               const SizedBox(
@@ -75,8 +75,6 @@ class _SignUpState extends State<AuthenticatePage> {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(content: Text("Please add your several informations and let us know you!")));
                         }
-
-                        // If user get success from sign up or sign in, navigate to account page.
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const UserProfilePage()),
@@ -98,8 +96,8 @@ class _SignUpState extends State<AuthenticatePage> {
                                     ),
                                   )
                                 : const SizedBox.shrink(),
-                            ElevatedButton(onPressed: () => context.read<AuthCubit>().signUpUser(t1.text, t2.text), child: Text('Sign Up')),
-                            ElevatedButton(onPressed: () => context.read<AuthCubit>().signInUser(t1.text, t2.text), child: Text('Sign in')),
+                            ElevatedButton(onPressed: () => context.read<AuthCubit>().signUpUser(t1.text, t2.text), child: const Text('Sign Up')),
+                            ElevatedButton(onPressed: () => context.read<AuthCubit>().signInUser(t1.text, t2.text), child: const Text('Sign in')),
                           ],
                         );
                       },

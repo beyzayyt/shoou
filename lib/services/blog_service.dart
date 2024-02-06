@@ -10,7 +10,7 @@ class BlogService {
       db.collection('userblog').add({
         'title': title,
         'content': content,
-      }).then((DocumentReference doc) => print('DocumentSnapshot added with ID: blog service ${doc.id}'));
+      });
 
       SavedBlog user = SavedBlog(title: title, content: content);
 
@@ -26,7 +26,7 @@ class BlogService {
       QuerySnapshot querySnapshot = await collection.get();
       final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
       return allData;
-    } on FirebaseAuthException catch (e) {}
+    } catch (e) {}
     return null;
   }
 
@@ -39,7 +39,7 @@ class BlogService {
         await doc.reference.delete();
       }
       return true;
-    } on FirebaseAuthException catch (e) {
+    } catch (e) {
       return false;
     }
   }
@@ -53,7 +53,7 @@ class BlogService {
         await snapshots.docs[id].reference.delete();
       }
       return true;
-    } on FirebaseAuthException catch (e) {
+    } catch (e) {
       return false;
     }
   }
