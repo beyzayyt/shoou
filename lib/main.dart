@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:show_you/ui/authentication_page.dart';
-import 'package:show_you/ui/user_profile_page.dart';
+import 'package:show_you/ui/home_page.dart';
 import 'firebase_options.dart';
 
 late final FirebaseAuth auth;
@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         stream: auth.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return const UserProfilePage();
+            return const HomePage();
           }
           return const AuthenticatePage();
         },

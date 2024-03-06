@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:show_you/services/cubit/authentication/authentication_cubit.dart';
 import 'package:show_you/services/cubit/authentication/authentication_state.dart';
@@ -18,49 +19,66 @@ class _SignUpState extends State<AuthenticatePage> {
 
   var incomingTitle = "";
   var incomingContent = "";
+  bool passwordVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    passwordVisible = false;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(9.0),
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          height: MediaQuery.of(context).size.height / 2,
-          margin: const EdgeInsets.fromLTRB(0, 90, 0, 0),
-          child: Center(
-              child: Column(
+      body: Container(
+        decoration: BoxDecoration(color: Colors.purple[100]),
+        child: Padding(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 10, left: 20, right: 20),
+          child: Column(
             children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 24.0),
+                child: LoginRegisterTitleLogo(),
+              ),
               TextFormField(
-                cursorColor: Colors.amber,
                 keyboardType: TextInputType.emailAddress,
                 controller: t1,
                 decoration: InputDecoration(
                   hintText: "E-mail",
-                  hintStyle: Theme.of(context).textTheme.titleMedium,
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                  hintStyle: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white),
+                  focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Theme.of(context).primaryColor), borderRadius: const BorderRadius.all(Radius.circular(10))),
+                  enabledBorder:
+                      const OutlineInputBorder(borderSide: BorderSide(color: Colors.white), borderRadius: BorderRadius.all(Radius.circular(10))),
                 ),
               ),
               const SizedBox(
                 height: 25,
               ),
               TextFormField(
-                cursorColor: Colors.amber,
+                obscureText: !passwordVisible,
                 keyboardType: TextInputType.text,
                 controller: t2,
-                obscureText: true,
                 decoration: InputDecoration(
                   hintText: "Password",
-                  hintStyle: Theme.of(context).textTheme.titleMedium,
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                  hintStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
+                  focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Theme.of(context).primaryColor), borderRadius: const BorderRadius.all(Radius.circular(10))),
+                  enabledBorder:
+                      const OutlineInputBorder(borderSide: BorderSide(color: Colors.white), borderRadius: BorderRadius.all(Radius.circular(10))),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        passwordVisible = !passwordVisible;
+                      });
+                    },
+                  ),
                 ),
               ),
               const SizedBox(
@@ -96,17 +114,51 @@ class _SignUpState extends State<AuthenticatePage> {
                                     ),
                                   )
                                 : const SizedBox.shrink(),
-                            ElevatedButton(onPressed: () => context.read<AuthCubit>().signUpUser(t1.text, t2.text), child: const Text('Sign Up')),
-                            ElevatedButton(onPressed: () => context.read<AuthCubit>().signInUser(t1.text, t2.text), child: const Text('Sign in')),
+                            Row(
+                              children: [
+                                Expanded(
+                                    child: ElevatedButton(
+                                        onPressed: () => context.read<AuthCubit>().signUpUser(t1.text, t2.text), child: const Text('Sign Up'))),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                    child: ElevatedButton(
+                                        onPressed: () => context.read<AuthCubit>().signInUser(t1.text, t2.text), child: const Text('Sign in'))),
+                              ],
+                            )
                           ],
                         );
                       },
                     ),
                   ))
             ],
-          )),
+          ),
         ),
       ),
+    );
+  }
+}
+
+class LoginRegisterTitleLogo extends StatelessWidget {
+  const LoginRegisterTitleLogo({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SvgPicture.asset(
+          'assets/image/first_title.svg',
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+        SvgPicture.asset(
+          'assets/image/second_title.svg',
+        ),
+      ],
     );
   }
 }

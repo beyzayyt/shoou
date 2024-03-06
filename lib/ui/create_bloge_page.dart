@@ -7,6 +7,7 @@ import 'package:show_you/services/cubit/userBlog/user_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_state.dart';
 import 'package:show_you/services/cubit/userBlog/user_clear_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_clear_blog_state.dart';
+import 'package:show_you/ui/view/user_blog_list.dart';
 
 class CreateBlogPage extends StatefulWidget {
   const CreateBlogPage({super.key});
@@ -67,44 +68,7 @@ class _CreateBlogPageState extends State<CreateBlogPage> {
                     padding: const EdgeInsets.all(24.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height / 1.5,
-                        child: ListView.builder(
-                          itemCount: state.blogs!.length,
-                          itemBuilder: (context, index) {
-                            Map<String, dynamic> data = state.blogs![index] as Map<String, dynamic>;
-                            return Row(
-                              children: [
-                                Checkbox(
-                                  value: selectedList.contains(index),
-                                  onChanged: (bool? newValue) {
-                                    setState(() {
-                                      if (newValue!) {
-                                        selectedList.add(index);
-                                      } else {
-                                        selectedList.remove(index);
-                                      }
-                                    });
-                                  },
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      data['title'] ?? '',
-                                      style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      data['content'] ?? '',
-                                      style: const TextStyle(fontSize: 14),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
+                      child: UserBlogList(selectedList: selectedList, blog: state.blogs ?? []),
                     ),
                   );
                 } else {
