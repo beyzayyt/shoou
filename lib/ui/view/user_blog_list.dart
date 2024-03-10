@@ -17,11 +17,16 @@ class _UserBlogListState extends State<UserBlogList> {
     return SizedBox(
       height: MediaQuery.of(context).size.height / 1.5,
       child: ListView.separated(
-        separatorBuilder: (context, index) => !widget.isHomePage ? const SizedBox.shrink() : const Divider(),
+        separatorBuilder: (context, index) => !widget.isHomePage
+            ? const SizedBox(
+                height: 8
+              )
+            : const Divider(),
         itemCount: widget.blog.length,
         itemBuilder: (context, index) {
           Map<String, dynamic> data = widget.blog[index] as Map<String, dynamic>;
           return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               !widget.isHomePage
                   ? Checkbox(

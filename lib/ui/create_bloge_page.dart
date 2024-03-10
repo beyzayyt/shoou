@@ -9,22 +9,23 @@ import 'package:show_you/services/cubit/userBlog/user_clear_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_clear_blog_state.dart';
 import 'package:show_you/ui/view/user_blog_list.dart';
 
-class CreateBlogPage extends StatefulWidget {
-  const CreateBlogPage({super.key});
+class BlogPage extends StatefulWidget {
+  const BlogPage({super.key});
 
   @override
-  State<CreateBlogPage> createState() => _CreateBlogPageState();
+  State<BlogPage> createState() => _BlogPageState();
 }
 
-class _CreateBlogPageState extends State<CreateBlogPage> {
+class _BlogPageState extends State<BlogPage> {
   bool isSelected = false;
   List selectedList = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Blog"),
-        actions: const [],
+        title: const Text(
+          "BLOG",
+        ),
       ),
       body: MultiBlocProvider(
         providers: [
@@ -91,7 +92,7 @@ class _CreateBlogPageState extends State<CreateBlogPage> {
                           onPressed: () async {
                             var result = await Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => CreatePostPage()),
+                              MaterialPageRoute(builder: (context) => CreateBlogPage()),
                             );
                             if (context.mounted && result != null) context.read<UserShowBlogCubit>().showUserBlog();
                           },
@@ -112,10 +113,10 @@ class _CreateBlogPageState extends State<CreateBlogPage> {
   }
 }
 
-class CreatePostPage extends StatelessWidget {
+class CreateBlogPage extends StatelessWidget {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
-  CreatePostPage({Key? key}) : super(key: key);
+  CreateBlogPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

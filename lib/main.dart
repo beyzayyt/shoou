@@ -39,6 +39,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        scaffoldBackgroundColor: const Color.fromRGBO(214, 188, 246, 1),
+        appBarTheme: const AppBarTheme(
+            iconTheme: IconThemeData(color: Colors.white),
+            backgroundColor: Color.fromRGBO(214, 188, 246, 1),
+            titleTextStyle: TextStyle(
+              fontSize: 20,
+              fontStyle: FontStyle.italic,
+            )),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),

@@ -43,14 +43,14 @@ class HomePage extends StatelessWidget {
               ),
               floatingActionButton: FloatingActionButton(
                 onPressed: () async {
-                   await Navigator.push(
+                  await Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const UserProfilePage()),
+                    MaterialPageRoute(builder: (context) =>  const UserProfilePage()),
                   );
 
                   if (context.mounted) context.read<UserShowBlogCubit>().showUserBlog();
                 },
-                child: const Icon(Icons.add),
+                child: const Icon(Icons.person),
               ),
             ),
           );

@@ -30,110 +30,107 @@ class _SignUpState extends State<AuthenticatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(color: Colors.purple[100]),
-        child: Padding(
-          padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 10, left: 20, right: 20),
-          child: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 24.0),
-                child: LoginRegisterTitleLogo(),
+      body: Padding(
+        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 10, left: 20, right: 20),
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 24.0),
+              child: LoginRegisterTitleLogo(),
+            ),
+            TextFormField(
+              keyboardType: TextInputType.emailAddress,
+              controller: t1,
+              decoration: InputDecoration(
+                hintText: "E-mail",
+                hintStyle: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white),
+                focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                enabledBorder:
+                    const OutlineInputBorder(borderSide: BorderSide(color: Colors.white), borderRadius: BorderRadius.all(Radius.circular(10))),
               ),
-              TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                controller: t1,
-                decoration: InputDecoration(
-                  hintText: "E-mail",
-                  hintStyle: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white),
-                  focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            TextFormField(
+              obscureText: !passwordVisible,
+              keyboardType: TextInputType.text,
+              controller: t2,
+              decoration: InputDecoration(
+                hintText: "Password",
+                hintStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
+                focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+                enabledBorder:
+                    const OutlineInputBorder(borderSide: BorderSide(color: Colors.white), borderRadius: BorderRadius.all(Radius.circular(10))),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    passwordVisible ? Icons.visibility : Icons.visibility_off,
+                    color: Theme.of(context).primaryColor,
                   ),
-                  enabledBorder:
-                      const OutlineInputBorder(borderSide: BorderSide(color: Colors.white), borderRadius: BorderRadius.all(Radius.circular(10))),
+                  onPressed: () {
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
                 ),
               ),
-              const SizedBox(
-                height: 25,
-              ),
-              TextFormField(
-                obscureText: !passwordVisible,
-                keyboardType: TextInputType.text,
-                controller: t2,
-                decoration: InputDecoration(
-                  hintText: "Password",
-                  hintStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
-                  focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  enabledBorder:
-                      const OutlineInputBorder(borderSide: BorderSide(color: Colors.white), borderRadius: BorderRadius.all(Radius.circular(10))),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      passwordVisible ? Icons.visibility : Icons.visibility_off,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        passwordVisible = !passwordVisible;
-                      });
-                    },
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              BlocProvider<AuthCubit>(
-                  create: (context) => AuthCubit(),
-                  child: BlocListener<AuthCubit, AuthState>(
-                    listener: (context, state) async {
-                      if (state is SignUpCompleted || state is SignInCompleted) {
-                        if (state is SignUpCompleted && state.user.isNewUser) {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(content: Text("Please add your several informations and let us know you!")));
-                        }
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const UserProfilePage()),
-                        );
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            BlocProvider<AuthCubit>(
+                create: (context) => AuthCubit(),
+                child: BlocListener<AuthCubit, AuthState>(
+                  listener: (context, state) async {
+                    if (state is SignUpCompleted || state is SignInCompleted) {
+                      if (state is SignUpCompleted && state.user.isNewUser) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(content: Text("Please add your several informations and let us know you!")));
                       }
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const UserProfilePage()),
+                      );
+                    }
+                  },
+                  child: BlocBuilder<AuthCubit, AuthState>(
+                    builder: (context, state) {
+                      return Column(
+                        children: [
+                          state is SignUpFailed ? Text(state.errorMessage) : const SizedBox.shrink(),
+                          state is SignUpCompliting
+                              ? SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: Lottie.asset(
+                                    'assets/lottie/loading_animation.json',
+                                    fit: BoxFit.fill,
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: ElevatedButton(
+                                      onPressed: () => context.read<AuthCubit>().signUpUser(t1.text, t2.text), child: const Text('Sign Up'))),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                  child: ElevatedButton(
+                                      onPressed: () => context.read<AuthCubit>().signInUser(t1.text, t2.text), child: const Text('Sign in'))),
+                            ],
+                          )
+                        ],
+                      );
                     },
-                    child: BlocBuilder<AuthCubit, AuthState>(
-                      builder: (context, state) {
-                        return Column(
-                          children: [
-                            state is SignUpFailed ? Text(state.errorMessage) : const SizedBox.shrink(),
-                            state is SignUpCompliting
-                                ? SizedBox(
-                                    width: 50,
-                                    height: 50,
-                                    child: Lottie.asset(
-                                      'assets/lottie/loading_animation.json',
-                                      fit: BoxFit.fill,
-                                    ),
-                                  )
-                                : const SizedBox.shrink(),
-                            Row(
-                              children: [
-                                Expanded(
-                                    child: ElevatedButton(
-                                        onPressed: () => context.read<AuthCubit>().signUpUser(t1.text, t2.text), child: const Text('Sign Up'))),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                    child: ElevatedButton(
-                                        onPressed: () => context.read<AuthCubit>().signInUser(t1.text, t2.text), child: const Text('Sign in'))),
-                              ],
-                            )
-                          ],
-                        );
-                      },
-                    ),
-                  ))
-            ],
-          ),
+                  ),
+                ))
+          ],
         ),
       ),
     );
