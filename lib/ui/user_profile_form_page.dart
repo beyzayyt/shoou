@@ -109,7 +109,7 @@ class UserInformationTextField extends StatelessWidget {
   final TextInputType? keyboardType;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: TextFormField(
@@ -117,12 +117,11 @@ class UserInformationTextField extends StatelessWidget {
         controller: userName,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: Theme.of(context).textTheme.titleMedium!.copyWith(color: const Color.fromARGB(255, 138, 133, 138)),
+          hintStyle: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white),
           focusedBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: Color.fromARGB(255, 97, 94, 97)),
+            borderSide: BorderSide(color: Colors.white),
           ),
-          enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Color.fromARGB(255, 138, 133, 138)), borderRadius: BorderRadius.all(Radius.circular(10))),
+          enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white), borderRadius: BorderRadius.all(Radius.circular(10))),
         ),
       ),
     );

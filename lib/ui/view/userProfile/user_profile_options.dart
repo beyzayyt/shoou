@@ -3,16 +3,14 @@ import 'package:show_you/data/models/saved_user_model.dart';
 import 'package:show_you/ui/create_bloge_page.dart';
 import 'package:show_you/ui/user_profile_form_page.dart';
 
+typedef StringToVoidFunc = void Function(String);
+
 // ignore: must_be_immutable
-class UserProfileOptions extends StatefulWidget {
-  UserProfileOptions({super.key, required this.savedUserModel});
+class UserProfileOptions extends StatelessWidget {
+  UserProfileOptions({super.key, required this.savedUserModel, required this.onSubmit});
   SavedUserModel? savedUserModel;
+  final Function(SavedUserModel value) onSubmit;
 
-  @override
-  State<UserProfileOptions> createState() => _UserProfileOptionsState();
-}
-
-class _UserProfileOptionsState extends State<UserProfileOptions> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -52,9 +50,7 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
                   context,
                   MaterialPageRoute(builder: (context) => const UserProfileFormPage()),
                 );
-                setState(() {
-                  widget.savedUserModel = result;
-                });
+                onSubmit(result);
               },
               child: const Text(
                 'Edit Profile',

@@ -1,20 +1,15 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
 import 'package:show_you/services/cubit/authentication/authentication_cubit.dart';
 import 'package:show_you/services/cubit/authentication/authentication_state.dart';
 import 'package:show_you/ui/authentication_page.dart';
+import 'package:show_you/ui/profile_informations_page.dart';
 
 // ignore: must_be_immutable
-class LogOutandEdit extends StatefulWidget {
+class LogOutandEdit extends StatelessWidget {
   LogOutandEdit({super.key, required this.savedUserModel});
   SavedUserModel? savedUserModel;
-  @override
-  State<LogOutandEdit> createState() => _LogOutandEditState();
-}
-
-class _LogOutandEditState extends State<LogOutandEdit> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,7 +19,10 @@ class _LogOutandEditState extends State<LogOutandEdit> {
         children: [
           InkWell(
               onTap: () async {
-                await context.read<AuthCubit>().signOutUser();
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfileInformationsPage(savedUserModel: savedUserModel)),
+                );
               },
               child: const Text(
                 "Profile informations",

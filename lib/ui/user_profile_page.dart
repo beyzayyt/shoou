@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
 import 'package:show_you/ui/view/userProfile/logout_edit.dart';
 import 'package:show_you/ui/view/userProfile/user_profile_options.dart';
@@ -23,7 +24,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
     super.didUpdateWidget(oldWidget);
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,13 +54,18 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       padding: const EdgeInsets.all(12.0),
                       child: Column(
                         children: [
-                          Text(
-                            savedUserModel.userName.isEmpty ? 'You can add your name' : savedUserModel.userName,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontStyle: FontStyle.italic,
-                              color: Color.fromRGBO(66, 27, 115, 1),
-                            ),
+                          ValueListenableBuilder(
+                            valueListenable: Hive.box('userprofile').listenable(),
+                            builder: (context, box, child) {
+                              return Text(
+                                box.isEmpty ? 'You can add your name' : box.getAt(0),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontStyle: FontStyle.italic,
+                                  color: Color.fromRGBO(66, 27, 115, 1),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -69,7 +74,14 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 ),
               ]),
             ),
-            UserProfileOptions(savedUserModel: savedUserModel),
+            UserProfileOptions(
+              savedUserModel: savedUserModel,
+              onSubmit: (SavedUserModel value) => {
+                setState(() {
+                  savedUserModel = value;
+                })
+              },
+            ),
             const SizedBox(
               height: 50,
             ),

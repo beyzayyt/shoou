@@ -3,6 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:show_you/data/models/saved_user_model.dart';
 import 'package:show_you/ui/authentication_page.dart';
 import 'package:show_you/ui/home_page.dart';
 import 'firebase_options.dart';
@@ -28,6 +31,10 @@ void main() async {
       appleProvider: AppleProvider.debug,
     );
   }
+  final appDocumentDirectory = await getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDirectory.path);
+  Hive.registerAdapter<SavedUserModel>((SavedUserModelAdapter()));
+  await Hive.openBox('userprofile');
   runApp(const MyApp());
 }
 
