@@ -58,7 +58,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                             valueListenable: Hive.box('userprofile').listenable(),
                             builder: (context, box, child) {
                               return Text(
-                                box.isEmpty ? 'You can add your name' : box.getAt(0),
+                                box.isEmpty ? 'You can add your name' : box.get('userName'),
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontStyle: FontStyle.italic,

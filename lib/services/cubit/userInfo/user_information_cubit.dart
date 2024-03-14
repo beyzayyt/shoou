@@ -7,7 +7,7 @@ class UserInformationCubit extends Cubit<UserInformationState> {
 
   final UserInformationService userInfoService = UserInformationService();
 
-  Future<void> saveUserInfo(String userName, String userLastName, String userNickname, String userMobilePhone, String userBirthDate) async {
+  Future<void> saveUserInformations(String userName, String userLastName, String userNickname, String userMobilePhone, String userBirthDate) async {
     emit(UserInformationInitial());
     try {
       emit(UserInformationCompliting());
@@ -20,6 +20,26 @@ class UserInformationCubit extends Cubit<UserInformationState> {
       }
     } catch (e) {
       emit(UserInformationFailed('Create user failed'));
+    }
+  }
+
+  Future<void> showUserInfo(String documentId) async {
+    emit(ShowUserInformationInitial());
+    try {
+      emit(ShowUserInformationCompliting());
+      if (documentId.isNotEmpty) {
+        var user = await userInfoService.showUserInformationService(documentId);
+
+        if (user != null) {
+          emit(ShowUserInformationCompleted(user));
+        } else {
+          emit(ShowUserInformationFailed("userResult.errorMessage"));
+        }
+      } else {
+        emit(ShowUserInformationFailed("userResult.errorMessage"));
+      }
+    } catch (e) {
+      emit(ShowUserInformationFailed('Show user failed'));
     }
   }
 }

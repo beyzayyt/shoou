@@ -21,3 +21,21 @@ class UserInformationFailed extends UserInformationState {
 
   List<Object> get props => [errorMessage];
 }
+
+class ShowUserInformationInitial extends UserInformationState {}
+
+class ShowUserInformationCompliting extends UserInformationState {}
+
+class ShowUserInformationCompleted extends UserInformationState {
+  final SavedUserModel? user;
+  ShowUserInformationCompleted(this.user);
+
+  List<Object> get props => [];
+}
+
+class ShowUserInformationFailed extends UserInformationState {
+  final String errorMessage;
+  ShowUserInformationFailed(this.errorMessage);
+
+  List<Object> get props => [errorMessage];
+}
