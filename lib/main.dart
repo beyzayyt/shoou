@@ -35,6 +35,7 @@ void main() async {
   Hive.init(appDocumentDirectory.path);
   Hive.registerAdapter<SavedUserModel>((SavedUserModelAdapter()));
   await Hive.openBox('userprofile');
+  await Hive.openBox('userid');
   runApp(const MyApp());
 }
 

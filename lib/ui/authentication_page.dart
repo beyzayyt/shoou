@@ -87,14 +87,14 @@ class _SignUpState extends State<AuthenticatePage> {
                 child: BlocListener<AuthCubit, AuthState>(
                   listener: (context, state) async {
                     if (state is SignUpCompleted || state is SignInCompleted) {
-                      if (state is SignUpCompleted && state.user.isNewUser) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(content: Text("Please add your several informations and let us know you!")));
-                      }
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const UserProfilePage()),
                       );
+                      if (state is SignUpCompleted && state.user.isNewUser) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(content: Text("Please add your several informations and let us know you!")));
+                      }
                     }
                   },
                   child: BlocBuilder<AuthCubit, AuthState>(

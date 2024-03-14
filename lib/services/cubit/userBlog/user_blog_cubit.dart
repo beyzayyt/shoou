@@ -7,11 +7,11 @@ class UserShowBlogCubit extends Cubit<UserShowBlogState> {
 
   final BlogService userBlogService = BlogService();
 
-  Future<void> showUserBlog() async {
+  Future<void> showUserBlog(String userid) async {
     emit(ShowUserBlogInitial());
     try {
       emit(ShowUserBlogCompliting());
-      var blogs = await userBlogService.showUserBlogService();
+      var blogs = await userBlogService.showUserBlogService(userid);
 
       if (blogs != null) {
         emit(ShowUserBlogCompleted(blogs));

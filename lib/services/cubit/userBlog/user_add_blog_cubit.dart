@@ -8,11 +8,11 @@ class UserAddBlogCubit extends Cubit<UserAddBlogState> {
 
   final BlogService userBlogService = BlogService();
 
-  Future<void> addUserBlog(String title, String content) async {
+  Future<void> addUserBlog(String title, String content,String userid) async {
     emit(UserAddBlogInitial());
     try {
       emit(UserAddBlogCompliting());
-      var savedUser = await userBlogService.addUserBlogService(title, content);
+      var savedUser = await userBlogService.addUserBlogService(title, content, userid);
 
       if (savedUser.errorMessage.isEmpty) {
         emit(UserAddBlogCompleted(savedUser));

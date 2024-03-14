@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:show_you/data/models/user_model.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final User? firebaseUser = FirebaseAuth.instance.currentUser;
-
   Future<UserModel> signUp(
     String email,
     String password,
@@ -17,6 +17,8 @@ class AuthService {
       final User? firebaseUser = userCredential.user;
 
       if (firebaseUser != null) {
+        var box = await Hive.openBox('userid');
+        box.put('userid', firebaseUser.uid);
         await signIn(email.trim(), password.trim());
         return UserModel(
           isNewUser: true,
@@ -34,6 +36,8 @@ class AuthService {
   Future<bool> signOut() async {
     if (firebaseUser != null) {
       await FirebaseAuth.instance.signOut();
+      var box = await Hive.openBox('userprofile');
+      await box.clear();
       return true;
     }
     return false;

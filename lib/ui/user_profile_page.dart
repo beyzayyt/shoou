@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
+import 'package:show_you/ui/home_page.dart';
 import 'package:show_you/ui/view/userProfile/logout_edit.dart';
 import 'package:show_you/ui/view/userProfile/user_profile_options.dart';
 
@@ -30,6 +31,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
       appBar: AppBar(
         title: const Text(
           'MY ACCOUNT',
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          ),
         ),
       ),
       body: SingleChildScrollView(
