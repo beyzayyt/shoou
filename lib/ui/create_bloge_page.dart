@@ -20,6 +20,7 @@ class BlogPage extends StatefulWidget {
 class _BlogPageState extends State<BlogPage> {
   bool isSelected = false;
   List selectedList = [];
+  List temporaryBlog = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +28,15 @@ class _BlogPageState extends State<BlogPage> {
         title: const Text(
           "BLOG",
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.cleaning_services_outlined),
+            tooltip: 'Open shopping cart',
+            onPressed: () {
+              print("selected list $selectedList");
+            },
+          ),
+        ],
       ),
       body: ValueListenableBuilder(
         valueListenable: Hive.box('userid').listenable(),
@@ -35,7 +45,7 @@ class _BlogPageState extends State<BlogPage> {
           return MultiBlocProvider(
             providers: [
               BlocProvider<UserShowBlogCubit>(
-                create: (BuildContext context) => UserShowBlogCubit()..showUserBlog( userid),
+                create: (BuildContext context) => UserShowBlogCubit()..showUserBlog(userid),
               ),
               BlocProvider<UserClearBlogCubit>(
                 create: (BuildContext bcontext) => UserClearBlogCubit(),
@@ -74,7 +84,7 @@ class _BlogPageState extends State<BlogPage> {
                         padding: const EdgeInsets.all(24.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: UserBlogList(selectedList: selectedList, blog: state.blogs ?? []),
+                          child: UserBlogList(selectedList: selectedList, blog: state.blogs ?? [], userid: userid),
                         ),
                       );
                     } else {
@@ -89,7 +99,8 @@ class _BlogPageState extends State<BlogPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          ElevatedButton(onPressed: () => context.read<UserClearBlogCubit>().clearUserBlog(userid), child: const Text("Clear All Blogs")),
+                          ElevatedButton(
+                              onPressed: () => context.read<UserClearBlogCubit>().clearUserBlog(userid), child: const Text("Clear All Blogs")),
                           const SizedBox(
                             width: 16,
                           ),
@@ -167,10 +178,7 @@ class CreateBlogPage extends StatelessWidget {
                     const SizedBox(height: 16.0),
                     ElevatedButton(
                       onPressed: () async {
-                        await context.read<UserAddBlogCubit>().addUserBlog(
-                              titleController.text,
-                              contentController.text, userid
-                            );
+                        await context.read<UserAddBlogCubit>().addUserBlog(titleController.text, contentController.text, userid);
                       },
                       child: const Text('Submit'),
                     ),

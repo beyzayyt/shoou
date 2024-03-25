@@ -17,8 +17,6 @@ class AuthService {
       final User? firebaseUser = userCredential.user;
 
       if (firebaseUser != null) {
-        var box = await Hive.openBox('userid');
-        box.put('userid', firebaseUser.uid);
         await signIn(email.trim(), password.trim());
         return UserModel(
           isNewUser: true,
@@ -46,7 +44,10 @@ class AuthService {
   Future<UserModel> signIn(String email, String password) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+
       final User? firebaseUser = userCredential.user;
+      var box = await Hive.openBox('userid');
+      if(firebaseUser != null) box.put('userid', firebaseUser.uid);
       return UserModel(
         id: firebaseUser!.uid,
         email: firebaseUser.email ?? '',

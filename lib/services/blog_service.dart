@@ -5,12 +5,9 @@ import 'package:show_you/data/models/saved_blog_model.dart';
 class BlogService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  Future<SavedBlog> addUserBlogService(String title, String content,String userid) async {
+  Future<SavedBlog> addUserBlogService(String title, String content, String userid) async {
     try {
-      db.collection(userid).add({
-        'title': title,
-        'content': content,
-      });
+      db.collection('usersblogs').add({'title': title, 'content': content, 'userid': userid});
 
       SavedBlog user = SavedBlog(title: title, content: content);
 
@@ -21,7 +18,7 @@ class BlogService {
   }
 
   Future<List<Object?>?> showUserBlogService(String userid) async {
-    CollectionReference collection = FirebaseFirestore.instance.collection(userid);
+    CollectionReference collection = FirebaseFirestore.instance.collection('usersblogs');
     try {
       QuerySnapshot querySnapshot = await collection.get();
       final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
@@ -31,7 +28,7 @@ class BlogService {
   }
 
   Future<bool> clearUserAllBlogService(String userid) async {
-    CollectionReference collection = FirebaseFirestore.instance.collection(userid);
+    CollectionReference collection = FirebaseFirestore.instance.collection('usersblogs');
 
     try {
       var snapshots = await collection.get();
@@ -45,7 +42,7 @@ class BlogService {
   }
 
   Future<bool> clearUserBlogItemService(List idList, String userid) async {
-    CollectionReference collection = FirebaseFirestore.instance.collection(userid);
+    CollectionReference collection = FirebaseFirestore.instance.collection('usersblogs');
     try {
       var snapshots = await collection.get();
 
