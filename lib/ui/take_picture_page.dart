@@ -1,12 +1,8 @@
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:show_you/services/cubit/userPhoto/user_photo_cubit.dart';
 import 'package:show_you/services/cubit/userPhoto/user_photo_state.dart';
 
@@ -19,7 +15,6 @@ class TakePicturePage extends StatefulWidget {
 
 class _TakePicturePageState extends State<TakePicturePage> {
   File? _image;
-  String? imageUrl;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +24,23 @@ class _TakePicturePageState extends State<TakePicturePage> {
         ),
       ),
       body: BlocProvider<UserPhotoCubit>(
-        create: (context) => UserPhotoCubit(),
+        create: (context) => UserPhotoCubit()..fetchImages(),
         child: BlocBuilder<UserPhotoCubit, UserPhotoState>(
           builder: (context, state) {
+            if (state is FetchUserPhotoCompleted) {
+              var images = state.images;
+              return SizedBox(
+                height: MediaQuery.of(context).size.height / 1.5,
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => const Divider(),
+                  itemCount: images.length,
+                  itemBuilder: (context, index) {
+                    Map<String, dynamic> data = images[index];
+                    return Padding(padding: const EdgeInsets.only(top: 50.0), child: Image.network('${data['url']}'));
+                  },
+                ),
+              );
+            }
             return Column(
               children: [
                 Center(
@@ -41,7 +50,7 @@ class _TakePicturePageState extends State<TakePicturePage> {
                   onPressed: () async {
                     getImage(context);
                   },
-                  child: const Text('Select image'),
+                  child: Text(_image == null ? 'Select image' : 'Select new image'),
                 ),
               ],
             );

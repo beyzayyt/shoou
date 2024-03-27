@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:show_you/services/cubit/userPhoto/user_photo_state.dart';
@@ -13,15 +12,31 @@ class UserPhotoCubit extends Cubit<UserPhotoState> {
     emit(UploadUserPhotoInitial());
     try {
       emit(UploadUserPhotoCompliting());
-      var savedUser = await userPhotoService.uploadImage(file);
+      var downloadUrl = await userPhotoService.uploadImage(file);
 
-      // if (savedUser.errorMessage.isEmpty) {
-      //   emit(UploadUserPhotoCompleted(savedUser));
-      // } else {
-      //   emit(UploadUserPhotoFailed("userResult.errorMessage"));
-      // }
+      if (downloadUrl.isNotEmpty) {
+        emit(UploadUserPhotoCompleted(downloadUrl));
+      } else {
+        emit(UploadUserPhotoFailed("Download url failed"));
+      }
     } catch (e) {
-      emit(UploadUserPhotoFailed('Create blog failed'));
+      emit(UploadUserPhotoFailed('Download url failed'));
+    }
+  }
+
+  Future<void> fetchImages() async {
+    emit(FetchUserPhotoInitial());
+    try {
+      emit(FetchUserPhotoCompliting());
+      var images = await userPhotoService.fetchImages();
+
+      if (images.isNotEmpty) {
+        emit(FetchUserPhotoCompleted(images));
+      } else {
+        emit(FetchUserPhotoFailed("Fetch images failed"));
+      }
+    } catch (e) {
+      emit(FetchUserPhotoFailed('Fetch images failed'));
     }
   }
 }
