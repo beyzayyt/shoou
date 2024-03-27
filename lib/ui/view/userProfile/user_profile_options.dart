@@ -5,6 +5,7 @@ import 'package:show_you/data/models/saved_user_model.dart';
 import 'package:show_you/services/cubit/userInfo/user_information_cubit.dart';
 import 'package:show_you/services/cubit/userInfo/user_information_state.dart';
 import 'package:show_you/ui/create_bloge_page.dart';
+import 'package:show_you/ui/take_picture_page.dart';
 import 'package:show_you/ui/user_profile_form_page.dart';
 
 typedef StringToVoidFunc = void Function(String);
@@ -44,7 +45,10 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
               )),
           ElevatedButton(
               style: ElevatedButton.styleFrom(),
-              onPressed: () => null,
+              onPressed: () async =>  await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const TakePicturePage()),
+                ),
               child: const Text(
                 'Your Photos',
                 style: TextStyle(
