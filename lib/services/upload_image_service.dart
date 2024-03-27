@@ -31,7 +31,6 @@ class UploadImageService {
 
     await Future.forEach<Reference>(allFiles, (file) async {
       final String fileUrl = await file.getDownloadURL();
-      final FullMetadata fileMeta = await file.getMetadata();
       print('result is $fileUrl');
 
       files.add({
