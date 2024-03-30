@@ -39,20 +39,11 @@ class UserInformationService {
       CollectionReference collection = FirebaseFirestore.instance.collection('userinfo');
       DocumentSnapshot documentSnapshot = await collection.doc(documentId).get();
       if (documentSnapshot.exists) {
-        // Retrieve data from the document
         Object data = documentSnapshot.data()!;
-        // Access fields in the data map
-        // var field1 = data['field1'];
-        // var field2 = data['field2'];
         var map = Map<String, dynamic>.from(data as Map<dynamic, dynamic>);
-        // Do something with the data
-        print('Field 1: $data');
-        print('Field 2: $map');
-        // return data;
         return SavedUserModel.fromJson(map);
-        // print('Field 2: $field2');
       } else {
-        print('Document does not exist');
+        print('user does not exist');
       }
     } catch (e) {}
     return null;

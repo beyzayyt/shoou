@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:show_you/services/cubit/authentication/authentication_cubit.dart';
 import 'package:show_you/services/cubit/authentication/authentication_state.dart';
 import 'package:show_you/ui/user_profile_page.dart';
+import 'package:show_you/ui/view/loading_animation.dart';
 
 class AuthenticatePage extends StatefulWidget {
   const AuthenticatePage({Key? key}) : super(key: key);
@@ -103,14 +104,7 @@ class _SignUpState extends State<AuthenticatePage> {
                         children: [
                           state is SignUpFailed ? Text(state.errorMessage) : const SizedBox.shrink(),
                           state is SignUpCompliting
-                              ? SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: Lottie.asset(
-                                    'assets/lottie/loading_animation.json',
-                                    fit: BoxFit.fill,
-                                  ),
-                                )
+                              ? const LoadingAnimation()
                               : const SizedBox.shrink(),
                           Row(
                             children: [

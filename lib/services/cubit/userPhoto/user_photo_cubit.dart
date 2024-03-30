@@ -24,11 +24,11 @@ class UserPhotoCubit extends Cubit<UserPhotoState> {
     }
   }
 
-  Future<void> fetchImages() async {
+  Future<void> fetchImages(bool isHomePage) async {
     emit(FetchUserPhotoInitial());
     try {
       emit(FetchUserPhotoCompliting());
-      var images = await userPhotoService.fetchImages();
+      var images = await userPhotoService.fetchImages(isHomePage);
 
       if (images.isNotEmpty) {
         emit(FetchUserPhotoCompleted(images));

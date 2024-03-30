@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:lottie/lottie.dart';
 import 'package:show_you/services/cubit/userBlog/user_add_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_add_blog_state.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_state.dart';
 import 'package:show_you/services/cubit/userBlog/user_clear_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_clear_blog_state.dart';
-import 'package:show_you/ui/view/user_blog_list.dart';
+import 'package:show_you/ui/view/loading_animation.dart';
+import 'package:show_you/ui/view/users_blog_list.dart';
 
 class BlogPage extends StatefulWidget {
   const BlogPage({super.key});
@@ -71,20 +71,13 @@ class _BlogPageState extends State<BlogPage> {
                 BlocConsumer<UserShowBlogCubit, UserShowBlogState>(
                   builder: (context, state) {
                     if (state is ShowUserBlogCompliting) {
-                      return SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: Lottie.asset(
-                          'assets/lottie/loading_animation.json',
-                          fit: BoxFit.fill,
-                        ),
-                      );
+                      return const LoadingAnimation();
                     } else if (state is ShowUserBlogCompleted && state.blogs != null) {
                       return Padding(
                         padding: const EdgeInsets.all(24.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: UserBlogList(selectedList: selectedList, blog: state.blogs ?? [], userid: userid),
+                          child: UsersBlogList(selectedList: selectedList, blog: state.blogs ?? [], userid: userid),
                         ),
                       );
                     } else {

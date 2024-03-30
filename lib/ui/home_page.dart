@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_state.dart';
+import 'package:show_you/services/cubit/userPhoto/user_photo_cubit.dart';
+import 'package:show_you/services/cubit/userPhoto/user_photo_state.dart';
 import 'package:show_you/ui/user_profile_page.dart';
-import 'package:show_you/ui/view/user_blog_list.dart';
+import 'package:show_you/ui/view/users_blog_list.dart';
+import 'package:show_you/ui/view/users_photo_list.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -19,34 +23,47 @@ class HomePage extends StatelessWidget {
             BlocProvider<UserShowBlogCubit>(
               create: (BuildContext context) => UserShowBlogCubit()..showUserBlog(box.get('userid') ?? ''),
             ),
+            BlocProvider<UserPhotoCubit>(create: (BuildContext context) => UserPhotoCubit()..fetchImages(true)),
           ],
           child: BlocBuilder<UserShowBlogCubit, UserShowBlogState>(
             builder: (context, stateshowblog) {
               return DefaultTabController(
-                length: 3,
+                length: 2,
                 child: Scaffold(
                   appBar: AppBar(
                     bottom: const TabBar(
                       tabs: [
-                        Tab(text: 'Other People'),
-                        Tab(text: 'Blogs'),
                         Tab(text: 'Photos'),
+                        Tab(text: 'Blogs'),
                       ],
                     ),
                   ),
                   body: TabBarView(
                     children: [
-                      const Center(
-                        child: Text('Content for Tab 1'),
+                      BlocBuilder<UserPhotoCubit, UserPhotoState>(
+                        builder: (context, fetchuserphotostate) {
+                          if (fetchuserphotostate is FetchUserPhotoCompliting) {
+                            return SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: Lottie.asset(
+                                'assets/lottie/loading_animation.json',
+                                fit: BoxFit.fill,
+                              ),
+                            );
+                          }
+                          return fetchuserphotostate is FetchUserPhotoCompleted
+                              ? Center(
+                                  child: UserPhotoListView(images: fetchuserphotostate.images),
+                                )
+                              : const SizedBox.shrink();
+                        },
                       ),
                       if (stateshowblog is ShowUserBlogCompleted && stateshowblog.blogs != null)
                         Padding(
                           padding: const EdgeInsets.all(24.0),
-                          child: UserBlogList(blog: stateshowblog.blogs ?? [], isHomePage: true, userid: box.get('userid') ?? ''),
+                          child: UsersBlogList(blog: stateshowblog.blogs ?? [], isHomePage: true, userid: box.get('userid') ?? ''),
                         ),
-                      const Center(
-                        child: Text('Content for Tab 3'),
-                      ),
                     ],
                   ),
                   floatingActionButton: FloatingActionButton(

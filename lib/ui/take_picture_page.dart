@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:show_you/services/cubit/userPhoto/user_photo_cubit.dart';
 import 'package:show_you/services/cubit/userPhoto/user_photo_state.dart';
+import 'package:show_you/ui/view/users_photo_list.dart';
 
 class TakePicturePage extends StatefulWidget {
   const TakePicturePage({super.key});
@@ -23,22 +24,12 @@ class _TakePicturePageState extends State<TakePicturePage> {
         ),
       ),
       body: BlocProvider<UserPhotoCubit>(
-        create: (context) => UserPhotoCubit()..fetchImages(),
+        create: (context) => UserPhotoCubit()..fetchImages(false),
         child: BlocBuilder<UserPhotoCubit, UserPhotoState>(
           builder: (context, state) {
             if (state is FetchUserPhotoCompleted) {
               var images = state.images;
-              return SizedBox(
-                height: MediaQuery.of(context).size.height / 1.5,
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => const Divider(),
-                  itemCount: images.length,
-                  itemBuilder: (context, index) {
-                    Map<String, dynamic> data = images[index];
-                    return Padding(padding: const EdgeInsets.only(top: 50.0), child: Image.network('${data['url']}'));
-                  },
-                ),
-              );
+              return UserPhotoListView(images: images);
             }
             return Column(
               children: [
