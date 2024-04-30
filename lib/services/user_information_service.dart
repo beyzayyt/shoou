@@ -7,7 +7,7 @@ class UserInformationService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
   Future<SavedUserModel> userInformationService(
-      String userName, String userLastName, String userNickname, String userMobilePhone, String userBirthDate) async {
+      String userName, String userLastName, String userNickname, String userMobilePhone, String userBirthDate, String profilePhotoUrl) async {
     try {
       CollectionReference collectionReference = FirebaseFirestore.instance.collection('userinfo');
       DocumentReference newDocRef = await collectionReference.add({
@@ -16,6 +16,7 @@ class UserInformationService {
         'userNickname': userNickname,
         'userMobilePhone': userMobilePhone,
         'userBirthDate': userBirthDate,
+        'profilePhotoUrl': profilePhotoUrl
       });
       String documentId = newDocRef.id;
       SavedUserModel user = SavedUserModel(
@@ -24,10 +25,12 @@ class UserInformationService {
           userNickname: userNickname,
           userMobilePhone: userMobilePhone,
           userBirthDate: userBirthDate,
-          documentId: documentId);
+          documentId: documentId,
+          profilePhotoUrl: profilePhotoUrl);
       var box = await Hive.openBox('userprofile');
       box.put('userName', user.userName);
       box.put('documentId', user.documentId);
+      box.put('profilePhotoUrl', profilePhotoUrl);
       return user;
     } on FirebaseAuthException catch (e) {
       return SavedUserModel(errorMessage: e.message!);

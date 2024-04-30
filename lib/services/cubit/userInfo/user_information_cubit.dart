@@ -7,11 +7,11 @@ class UserInformationCubit extends Cubit<UserInformationState> {
 
   final UserInformationService userInfoService = UserInformationService();
 
-  Future<void> saveUserInformations(String userName, String userLastName, String userNickname, String userMobilePhone, String userBirthDate) async {
+  Future<void> saveUserInformations(String userName, String userLastName, String userNickname, String userMobilePhone, String userBirthDate, String profilePhotoUrl) async {
     emit(UserInformationInitial());
     try {
       emit(UserInformationCompliting());
-      var savedUser = await userInfoService.userInformationService(userName, userLastName, userNickname, userMobilePhone, userBirthDate);
+      var savedUser = await userInfoService.userInformationService(userName, userLastName, userNickname, userMobilePhone, userBirthDate, profilePhotoUrl);
 
       if (savedUser.errorMessage.isEmpty) {
         emit(UserInformationCompleted(savedUser));

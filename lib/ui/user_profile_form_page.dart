@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
@@ -12,9 +13,8 @@ import 'package:show_you/services/cubit/userPhoto/user_photo_state.dart';
 
 // ignore: must_be_immutable
 class UserProfileFormPage extends StatefulWidget {
-  UserProfileFormPage({super.key, this.savedUserModel, this.profilePhotoUrl});
+  UserProfileFormPage({super.key, this.savedUserModel});
   SavedUserModel? savedUserModel;
-  String? profilePhotoUrl;
 
   @override
   State<UserProfileFormPage> createState() => _UserProfileState();
@@ -23,7 +23,7 @@ class UserProfileFormPage extends StatefulWidget {
 class _UserProfileState extends State<UserProfileFormPage> {
   late TextEditingController userName, userNickname, userLastName, userMobilePhone, userBirthDate;
   File? _image;
-
+  String? profilePhotoUrl;
 
   @override
   void initState() {
@@ -68,58 +68,63 @@ class _UserProfileState extends State<UserProfileFormPage> {
                       return Column(
                         children: [
                           BlocProvider<UserPhotoCubit>(
-                          create: (context) => UserPhotoCubit(),
-                          child: BlocBuilder<UserPhotoCubit, UserPhotoState>(
-                            builder: (context, state) {
-                              return Stack(
-                                children: [
-                                  BlocListener<UserPhotoCubit, UserPhotoState>(
-                                    listener: (context, state) {
-                                      if (state is UploadUserPhotoCompleted && state.downloadUrl != null) {
-                                        setState(() {
-                                        
-                                        });
-                                        // savedUserModel.profilePhotoUrl = state.downloadUrl!;
-                                      }
-                                    },
-                                    child: BlocBuilder<UserPhotoCubit, UserPhotoState>(
-                                      builder: (bcontext, state) {
+                            create: (context) => UserPhotoCubit(),
+                            child: BlocBuilder<UserPhotoCubit, UserPhotoState>(
+                              builder: (context, state) {
+                                return Stack(
+                                  children: [
+                                    BlocListener<UserPhotoCubit, UserPhotoState>(
+                                      listener: (context, state) {
                                         if (state is UploadUserPhotoCompleted && state.downloadUrl != null) {
-                                          return CircleAvatar(
-                                            radius: 70,
-                                            backgroundImage: NetworkImage(state.downloadUrl!),
-                                          );
+                                          setState(() {
+                                            profilePhotoUrl = state.downloadUrl!;
+                                          });
                                         }
-                                        return CircleAvatar(
-                                          radius: 70,
-                                          backgroundImage:  NetworkImage(''),
-                                        );
                                       },
-                                    ),
-                                  ),
-                                  Positioned(
-                                    right: 0,
-                                    bottom: 0,
-                                    child: Container(
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white,
+                                      child: BlocBuilder<UserPhotoCubit, UserPhotoState>(
+                                        builder: (bcontext, state) {
+                                          if (state is UploadUserPhotoCompleted && state.downloadUrl != null) {
+                                            return CircleAvatar(
+                                              radius: 70,
+                                              backgroundImage: NetworkImage(state.downloadUrl!),
+                                            );
+                                          }
+                                          return Padding(
+                                              padding: const EdgeInsets.only(top: 50.0),
+                                              child: box.get('profilePhotoUrl') == null
+                                                  ? SvgPicture.asset(
+                                                      'assets/image/person_asset.svg',
+                                                    )
+                                                  : CircleAvatar(
+                                                      radius: 70,
+                                                      backgroundImage: NetworkImage(box.get('profilePhotoUrl')),
+                                                    ));
+                                        },
                                       ),
-                                      padding: const EdgeInsets.all(8),
-                                      child: InkWell(
-                                        onTap: () => getImage(context),
-                                        child: const Icon(
-                                          Icons.camera_alt,
-                                          size: 20,
+                                    ),
+                                    Positioned(
+                                      right: 0,
+                                      bottom: 0,
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white,
+                                        ),
+                                        padding: const EdgeInsets.all(8),
+                                        child: InkWell(
+                                          onTap: () => getImage(context),
+                                          child: const Icon(
+                                            Icons.camera_alt,
+                                            size: 20,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              );
-                            },
+                                  ],
+                                );
+                              },
+                            ),
                           ),
-                        ),
                           // const CircleAvatar(
                           //   radius: 75,
                           //   backgroundColor: Colors.white,
@@ -160,8 +165,8 @@ class _UserProfileState extends State<UserProfileFormPage> {
                                 builder: (context, state) {
                                   return ElevatedButton(
                                       style: ElevatedButton.styleFrom(),
-                                      onPressed: () => context.read<UserInformationCubit>().saveUserInformations(
-                                          userName.text, userLastName.text, userNickname.text, userMobilePhone.text, userBirthDate.text),
+                                      onPressed: () => context.read<UserInformationCubit>().saveUserInformations(userName.text, userLastName.text,
+                                          userNickname.text, userMobilePhone.text, userBirthDate.text, profilePhotoUrl!),
                                       child: const Text(
                                         'Save',
                                         style: TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
@@ -181,11 +186,9 @@ class _UserProfileState extends State<UserProfileFormPage> {
         ),
       ),
     );
-
-    
   }
 
-   Future getImage(BuildContext context) async {
+  Future getImage(BuildContext context) async {
     try {
       final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
 

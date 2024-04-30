@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
@@ -54,37 +55,35 @@ class _UserProfilePageState extends State<UserProfilePage> {
           children: [
             Center(
               child: Stack(alignment: Alignment.topCenter, children: [
-                BlocProvider<UserPhotoCubit>(
-                  create: (context) => UserPhotoCubit(),
-                  child: Column(
-                    children: [
-                      const Padding(
-                          padding: EdgeInsets.only(top: 50.0),
-                          child: CircleAvatar(
-                            radius: 70,
-                            backgroundImage: AssetImage('assets/images/profile_image.jpg'),
-                          )),
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          children: [
-                            ValueListenableBuilder(
-                              valueListenable: Hive.box('userprofile').listenable(),
-                              builder: (context, box, child) {
-                                return Text(
-                                  box.isEmpty ? 'You can add your name' : box.get('userName'),
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontStyle: FontStyle.italic,
-                                    color: Color.fromRGBO(66, 27, 115, 1),
-                                  ),
-                                );
-                              },
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: ValueListenableBuilder(
+                    valueListenable: Hive.box('userprofile').listenable(),
+                    builder: (context, box, child) {
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 50.0),
+                            child: box.get('profilePhotoUrl') == null
+                                ? SvgPicture.asset(
+                                    'assets/image/person_asset.svg',
+                                  )
+                                :CircleAvatar(
+                                              radius: 70,
+                                              backgroundImage: NetworkImage(box.get('profilePhotoUrl')),
+                                            )
+                          ),
+                          Text(
+                            box.isEmpty ? 'You can add your name' : box.get('userName'),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontStyle: FontStyle.italic,
+                              color: Color.fromRGBO(66, 27, 115, 1),
                             ),
-                          ],
-                        ),
-                      ),
-                    ],
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ]),
