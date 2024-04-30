@@ -7,7 +7,7 @@ class UploadUserPhotoInitial extends UserPhotoState {}
 class UploadUserPhotoCompliting extends UserPhotoState {}
 
 class UploadUserPhotoCompleted extends UserPhotoState {
-  final String downloadUrl;
+  final String? downloadUrl;
   UploadUserPhotoCompleted(this.downloadUrl);
 
   List<Object> get props => [];

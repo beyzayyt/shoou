@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 class UploadImageService {
@@ -9,12 +10,12 @@ class UploadImageService {
 
   Future<String> uploadImage(File file) async {
     var uuid = const Uuid();
-
+    var box = await Hive.openBox('userprofile');
     Reference ref = storage.ref().child('images').child(auth.currentUser!.uid).child('userphoto/${uuid.v1()}');
 
     UploadTask uploadTask = ref.putFile(File(file.path));
     TaskSnapshot snapshot = await uploadTask.catchError((err) {
-      print('AError: $err');
+      print('Error: $err');
       return err;
     }, test: (error) {
       return error is int && error >= 400;
@@ -28,6 +29,7 @@ class UploadImageService {
     ListResult? result;
     ListResult? lastResult;
     List<Reference> allFiles = [];
+    List? userNames = [];
 
     if (isHomePage) {
       result = await FirebaseStorage.instance.ref().child('images').listAll();

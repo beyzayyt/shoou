@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:lottie/lottie.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_state.dart';
 import 'package:show_you/services/cubit/userPhoto/user_photo_cubit.dart';
 import 'package:show_you/services/cubit/userPhoto/user_photo_state.dart';
 import 'package:show_you/ui/user_profile_page.dart';
+import 'package:show_you/ui/view/loading_animation.dart';
 import 'package:show_you/ui/view/users_blog_list.dart';
 import 'package:show_you/ui/view/users_photo_list.dart';
 
@@ -28,37 +28,28 @@ class HomePage extends StatelessWidget {
           child: BlocBuilder<UserShowBlogCubit, UserShowBlogState>(
             builder: (context, stateshowblog) {
               return DefaultTabController(
-                length: 2,
+                length: 1,
                 child: Scaffold(
                   appBar: AppBar(
                     bottom: const TabBar(
                       tabs: [
-                        Tab(text: 'Photos'),
+                        // Tab(text: 'Photos'),
                         Tab(text: 'Blogs'),
                       ],
                     ),
                   ),
                   body: TabBarView(
                     children: [
-                      BlocBuilder<UserPhotoCubit, UserPhotoState>(
-                        builder: (context, fetchuserphotostate) {
-                          if (fetchuserphotostate is FetchUserPhotoCompliting) {
-                            return SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: Lottie.asset(
-                                'assets/lottie/loading_animation.json',
-                                fit: BoxFit.fill,
-                              ),
-                            );
-                          }
-                          return fetchuserphotostate is FetchUserPhotoCompleted
-                              ? Center(
-                                  child: UserPhotoListView(images: fetchuserphotostate.images),
-                                )
-                              : const SizedBox.shrink();
-                        },
-                      ),
+                      // BlocBuilder<UserPhotoCubit, UserPhotoState>(
+                      //   builder: (context, fetchuserphotostate) {
+                      //     if (fetchuserphotostate is FetchUserPhotoCompliting) {
+                      //       return const LoadingAnimation();
+                      //     }
+                      //     return fetchuserphotostate is FetchUserPhotoCompleted
+                      //         ? UserPhotoListView(images: fetchuserphotostate.images)
+                      //         : const SizedBox.shrink();
+                      //   },
+                      // ),
                       if (stateshowblog is ShowUserBlogCompleted && stateshowblog.blogs != null)
                         Padding(
                           padding: const EdgeInsets.all(24.0),

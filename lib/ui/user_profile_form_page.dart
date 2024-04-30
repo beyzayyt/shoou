@@ -7,8 +7,9 @@ import 'package:show_you/services/cubit/userInfo/user_information_state.dart';
 
 // ignore: must_be_immutable
 class UserProfileFormPage extends StatefulWidget {
-  UserProfileFormPage({super.key, this.savedUserModel});
+  UserProfileFormPage({super.key, this.savedUserModel, this.profilePhotoUrl});
   SavedUserModel? savedUserModel;
+  String? profilePhotoUrl;
 
   @override
   State<UserProfileFormPage> createState() => _UserProfileState();

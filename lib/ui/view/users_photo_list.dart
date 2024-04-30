@@ -17,7 +17,12 @@ class UserPhotoListView extends StatelessWidget {
         itemCount: images.length,
         itemBuilder: (context, index) {
           Map<String, dynamic> data = images[index];
-          return Padding(padding: const EdgeInsets.only(top: 50.0), child: Image.network('${data['url']}'));
+          return Padding(
+              padding: const EdgeInsets.only(top: 50.0),
+              child: Image.network(
+                '${data['url']}',
+                fit: BoxFit.fill,
+              ));
         },
       ),
     );
