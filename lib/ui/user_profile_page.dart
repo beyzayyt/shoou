@@ -55,56 +55,15 @@ class _UserProfilePageState extends State<UserProfilePage> {
             Center(
               child: Stack(alignment: Alignment.topCenter, children: [
                 BlocProvider<UserPhotoCubit>(
-                   create: (context) => UserPhotoCubit(),
+                  create: (context) => UserPhotoCubit(),
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 50.0),
-                        child: BlocProvider<UserPhotoCubit>(
-                           create: (context) => UserPhotoCubit(),
-                          child: BlocBuilder<UserPhotoCubit, UserPhotoState>(
-                            builder: (context, state) {
-                              return Stack(
-                              children: [
-                                BlocBuilder<UserPhotoCubit, UserPhotoState>(
-                                  builder: (bcontext, state) {
-                                    if (state is UploadUserPhotoCompleted && state.downloadUrl != null) {
-                                      return CircleAvatar(
-                                        radius: 70,
-                                        backgroundImage: NetworkImage(state.downloadUrl!),
-                                      );
-                                    }
-                                    return const CircleAvatar(
-                                      radius: 70,
-                                      backgroundImage: AssetImage('assets/images/profile_image.jpg'),
-                                    );
-                                  },
-                                ),
-                                Positioned(
-                                  right: 0,
-                                  bottom: 0,
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white,
-                                    ),
-                                    padding: const EdgeInsets.all(8),
-                                    child: InkWell(
-                                      onTap: () => getImage(context),
-                                      child: const Icon(
-                                        Icons.camera_alt,
-                                        size: 20,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                            },
-                           
-                          ),
-                        ),
-                      ),
+                      const Padding(
+                          padding: EdgeInsets.only(top: 50.0),
+                          child: CircleAvatar(
+                            radius: 70,
+                            backgroundImage: AssetImage('assets/images/profile_image.jpg'),
+                          )),
                       Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Column(

@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
 import 'package:show_you/services/cubit/userInfo/user_information_cubit.dart';
 import 'package:show_you/services/cubit/userInfo/user_information_state.dart';
+import 'package:show_you/services/cubit/userPhoto/user_photo_cubit.dart';
+import 'package:show_you/services/cubit/userPhoto/user_photo_state.dart';
 
 // ignore: must_be_immutable
 class UserProfileFormPage extends StatefulWidget {
@@ -17,6 +22,8 @@ class UserProfileFormPage extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfileFormPage> {
   late TextEditingController userName, userNickname, userLastName, userMobilePhone, userBirthDate;
+  File? _image;
+
 
   @override
   void initState() {
@@ -60,13 +67,66 @@ class _UserProfileState extends State<UserProfileFormPage> {
                     builder: (BuildContext context, UserInformationState state) {
                       return Column(
                         children: [
-                          const CircleAvatar(
-                            radius: 75,
-                            backgroundColor: Colors.white,
-                            backgroundImage: NetworkImage(
-                              'https://images.unsplash.com/photo-1682687982423-295485af248a?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                            ),
+                          BlocProvider<UserPhotoCubit>(
+                          create: (context) => UserPhotoCubit(),
+                          child: BlocBuilder<UserPhotoCubit, UserPhotoState>(
+                            builder: (context, state) {
+                              return Stack(
+                                children: [
+                                  BlocListener<UserPhotoCubit, UserPhotoState>(
+                                    listener: (context, state) {
+                                      if (state is UploadUserPhotoCompleted && state.downloadUrl != null) {
+                                        setState(() {
+                                        
+                                        });
+                                        // savedUserModel.profilePhotoUrl = state.downloadUrl!;
+                                      }
+                                    },
+                                    child: BlocBuilder<UserPhotoCubit, UserPhotoState>(
+                                      builder: (bcontext, state) {
+                                        if (state is UploadUserPhotoCompleted && state.downloadUrl != null) {
+                                          return CircleAvatar(
+                                            radius: 70,
+                                            backgroundImage: NetworkImage(state.downloadUrl!),
+                                          );
+                                        }
+                                        return CircleAvatar(
+                                          radius: 70,
+                                          backgroundImage:  NetworkImage(''),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 0,
+                                    bottom: 0,
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                      ),
+                                      padding: const EdgeInsets.all(8),
+                                      child: InkWell(
+                                        onTap: () => getImage(context),
+                                        child: const Icon(
+                                          Icons.camera_alt,
+                                          size: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
                           ),
+                        ),
+                          // const CircleAvatar(
+                          //   radius: 75,
+                          //   backgroundColor: Colors.white,
+                          //   backgroundImage: NetworkImage(
+                          //     'https://images.unsplash.com/photo-1682687982423-295485af248a?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                          //   ),
+                          // ),
                           const SizedBox(height: 24),
                           UserInformationTextField(
                             userName: userName,
@@ -121,6 +181,26 @@ class _UserProfileState extends State<UserProfileFormPage> {
         ),
       ),
     );
+
+    
+  }
+
+   Future getImage(BuildContext context) async {
+    try {
+      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      setState(() {
+        if (pickedFile != null) {
+          _image = File(pickedFile.path);
+          context.read<UserPhotoCubit>().uploadPhoto(_image!);
+        } else {
+          print('No image selected.');
+        }
+      });
+      return await pickedFile?.readAsBytes();
+    } catch (e) {
+      print('Error picking image: $e');
+    }
   }
 
   void loadInitialTextField() {

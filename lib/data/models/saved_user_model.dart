@@ -24,6 +24,9 @@ class SavedUserModel {
   @HiveField(6)
   final String documentId;
 
+  @HiveField(7)
+  String profilePhotoUrl;
+
   SavedUserModel(
       {this.userName = '',
       this.userLastName = '',
@@ -31,15 +34,16 @@ class SavedUserModel {
       this.userBirthDate = '',
       this.userNickname = '',
       this.errorMessage = '',
-      this.documentId = ''});
+      this.documentId = '',
+      this.profilePhotoUrl = ''});
 
-      factory SavedUserModel.fromJson(Map<String, dynamic> json) {
+  factory SavedUserModel.fromJson(Map<String, dynamic> json) {
     return SavedUserModel(
-      userBirthDate: json['userBirthDate'],
-      userLastName: json['userLastName'],
-      userMobilePhone: json['userMobilePhone'],
-      userNickname: json['userNickname'],
-      userName: json['userName'],
-    );
+        userBirthDate: json['userBirthDate'],
+        userLastName: json['userLastName'],
+        userMobilePhone: json['userMobilePhone'],
+        userNickname: json['userNickname'],
+        userName: json['userName'],
+        profilePhotoUrl: json['profilePhotoUrl']);
   }
 }
