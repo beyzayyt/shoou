@@ -4,11 +4,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_state.dart';
 import 'package:show_you/services/cubit/userPhoto/user_photo_cubit.dart';
-import 'package:show_you/services/cubit/userPhoto/user_photo_state.dart';
 import 'package:show_you/ui/user_profile_page.dart';
-import 'package:show_you/ui/view/loading_animation.dart';
 import 'package:show_you/ui/view/users_blog_list.dart';
-import 'package:show_you/ui/view/users_photo_list.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

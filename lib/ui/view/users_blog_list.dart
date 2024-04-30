@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore: must_be_immutable
 class UsersBlogList extends StatefulWidget {
@@ -12,6 +13,17 @@ class UsersBlogList extends StatefulWidget {
   State<UsersBlogList> createState() => _UsersBlogListState();
 }
 
+// Padding(
+//                             padding: const EdgeInsets.only(top: 50.0),
+//                             child: box.get('profilePhotoUrl') == null
+//                                 ? SvgPicture.asset(
+//                                     'assets/image/person_asset.svg',
+//                                   )
+//                                 :CircleAvatar(
+//                                               radius: 70,
+//                                               backgroundImage: NetworkImage(box.get('profilePhotoUrl')),
+//                                             )
+//                           ),
 class _UsersBlogListState extends State<UsersBlogList> {
   @override
   Widget build(BuildContext context) {
@@ -41,22 +53,37 @@ class _UsersBlogListState extends State<UsersBlogList> {
                           )
                         : const SizedBox.shrink(),
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            data['username'] != null ? data['username'].toString().toUpperCase() : 'Anonymous',
-                            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                          (data['userProfilePhoto'] == null || data['userProfilePhoto'].isEmpty)
+                              ? SvgPicture.asset(
+                                  'assets/image/person_asset.svg',
+                                )
+                              : CircleAvatar(
+                                  backgroundImage: NetworkImage(data['userProfilePhoto']),
+                                ),
+                          const SizedBox(
+                            width: 24,
                           ),
-                          Text(
-                            data['title'] ?? '',
-                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                          ),
-                          Text(
-                            data['content'] ?? '',
-                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
-                            maxLines: widget.isHomePage ? null : 2,
-                            overflow: widget.isHomePage ? null : TextOverflow.ellipsis,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                data['username'] != null ? data['username'].toString().toUpperCase() : 'Anonymous',
+                                style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                              ),
+                              Text(
+                                data['title'] ?? '',
+                                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                              ),
+                              Text(
+                                data['content'] ?? '',
+                                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+                                maxLines: widget.isHomePage ? null : 2,
+                                overflow: widget.isHomePage ? null : TextOverflow.ellipsis,
+                              ),
+                            ],
                           ),
                         ],
                       ),

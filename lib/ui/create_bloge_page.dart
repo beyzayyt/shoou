@@ -169,11 +169,19 @@ class CreateBlogPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16.0),
-                    ElevatedButton(
-                      onPressed: () async {
-                        await context.read<UserAddBlogCubit>().addUserBlog(titleController.text, contentController.text, userid);
+                    ValueListenableBuilder(
+                      valueListenable: Hive.box('userprofile').listenable(),
+                      builder: (context, box, child) {
+                        var userProfilePhoto = box.get('profilePhotoUrl') ?? '';
+                        return ElevatedButton(
+                          onPressed: () async {
+                            await context
+                                .read<UserAddBlogCubit>()
+                                .addUserBlog(titleController.text, contentController.text, userid, userProfilePhoto);
+                          },
+                          child: const Text('Submit'),
+                        );
                       },
-                      child: const Text('Submit'),
                     ),
                   ],
                 );

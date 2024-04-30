@@ -7,7 +7,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
 import 'package:show_you/services/cubit/userPhoto/user_photo_cubit.dart';
-import 'package:show_you/services/cubit/userPhoto/user_photo_state.dart';
 import 'package:show_you/ui/home_page.dart';
 import 'package:show_you/ui/view/userProfile/logout_edit.dart';
 import 'package:show_you/ui/view/userProfile/user_profile_options.dart';

@@ -6,10 +6,12 @@ import 'package:show_you/data/models/saved_blog_model.dart';
 class BlogService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  Future<SavedBlog> addUserBlogService(String title, String content, String userid) async {
+  Future<SavedBlog> addUserBlogService(String title, String content, String userid, String userProfilePhoto) async {
     var box = await Hive.openBox('userprofile');
     try {
-      db.collection('usersblogs').add({'title': title, 'content': content, 'userid': userid, 'username': box.get('userName')});
+      db
+          .collection('usersblogs')
+          .add({'title': title, 'content': content, 'userid': userid, 'username': box.get('userName'), 'userProfilePhoto': userProfilePhoto});
 
       SavedBlog user = SavedBlog(title: title, content: content);
 
