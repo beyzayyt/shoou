@@ -166,7 +166,7 @@ class _UserProfileState extends State<UserProfileFormPage> {
                                   return ElevatedButton(
                                       style: ElevatedButton.styleFrom(),
                                       onPressed: () => context.read<UserInformationCubit>().saveUserInformations(userName.text, userLastName.text,
-                                          userNickname.text, userMobilePhone.text, userBirthDate.text, profilePhotoUrl!),
+                                          userNickname.text, userMobilePhone.text, userBirthDate.text, profilePhotoUrl ?? ''),
                                       child: const Text(
                                         'Save',
                                         style: TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
