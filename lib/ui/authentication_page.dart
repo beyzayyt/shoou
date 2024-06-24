@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
+import 'package:show_you/data/localization/local_keys.dart';
 import 'package:show_you/services/cubit/authentication/authentication_cubit.dart';
 import 'package:show_you/services/cubit/authentication/authentication_state.dart';
 import 'package:show_you/ui/user_profile_page.dart';
@@ -43,7 +45,7 @@ class _SignUpState extends State<AuthenticatePage> {
               keyboardType: TextInputType.emailAddress,
               controller: t1,
               decoration: InputDecoration(
-                hintText: "E-mail",
+                hintText: LocaleKeys.email.tr(),
                 hintStyle: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white),
                 focusedBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
@@ -60,7 +62,7 @@ class _SignUpState extends State<AuthenticatePage> {
               keyboardType: TextInputType.text,
               controller: t2,
               decoration: InputDecoration(
-                hintText: "Password",
+                hintText: LocaleKeys.password.tr(),
                 hintStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white),
                 focusedBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
@@ -93,8 +95,7 @@ class _SignUpState extends State<AuthenticatePage> {
                         MaterialPageRoute(builder: (context) => const UserProfilePage()),
                       );
                       if (state is SignUpCompleted && state.user.isNewUser) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(content: Text("Please add your several informations and let us know you!")));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(LocaleKeys.newuserdescription.tr())));
                       }
                     }
                   },
@@ -103,20 +104,20 @@ class _SignUpState extends State<AuthenticatePage> {
                       return Column(
                         children: [
                           state is SignUpFailed ? Text(state.errorMessage) : const SizedBox.shrink(),
-                          state is SignUpCompliting
-                              ? const LoadingAnimation()
-                              : const SizedBox.shrink(),
+                          state is SignUpCompliting ? const LoadingAnimation() : const SizedBox.shrink(),
                           Row(
                             children: [
                               Expanded(
                                   child: ElevatedButton(
-                                      onPressed: () => context.read<AuthCubit>().signUpUser(t1.text, t2.text), child: const Text('Sign Up'))),
+                                      onPressed: () => context.read<AuthCubit>().signInUser(t1.text, t2.text),
+                                      child: Text(LocaleKeys.authbuttonsignin.tr()))),
                               const SizedBox(
                                 width: 10,
                               ),
                               Expanded(
                                   child: ElevatedButton(
-                                      onPressed: () => context.read<AuthCubit>().signInUser(t1.text, t2.text), child: const Text('Sign in'))),
+                                      onPressed: () => context.read<AuthCubit>().signUpUser(t1.text, t2.text),
+                                      child: Text(LocaleKeys.authbuttonsignUp.tr()))),
                             ],
                           )
                         ],

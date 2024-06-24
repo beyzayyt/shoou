@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:show_you/data/localization/app_constant.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
 import 'package:show_you/ui/authentication_page.dart';
 import 'package:show_you/ui/home_page.dart';
@@ -14,6 +16,7 @@ late final FirebaseAuth auth;
 late final FirebaseApp app;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   app = await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -36,7 +39,12 @@ void main() async {
   Hive.registerAdapter<SavedUserModel>((SavedUserModelAdapter()));
   await Hive.openBox('userprofile');
   await Hive.openBox('userid');
-  runApp(const MyApp());
+  runApp(EasyLocalization(
+    supportedLocales: AppConstant.supportedLocale,
+    path: AppConstant.langPath,
+    fallbackLocale: const Locale('en', 'US'),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -45,6 +53,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: const Color.fromRGBO(214, 188, 246, 1),

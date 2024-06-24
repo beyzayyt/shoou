@@ -62,16 +62,15 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       return Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 50.0),
-                            child: box.get('profilePhotoUrl') == null
-                                ? SvgPicture.asset(
-                                    'assets/image/person_asset.svg',
-                                  )
-                                :CircleAvatar(
-                                              radius: 70,
-                                              backgroundImage: NetworkImage(box.get('profilePhotoUrl')),
-                                            )
-                          ),
+                              padding: const EdgeInsets.only(top: 50.0),
+                              child: box.get('profilePhotoUrl') == null || box.get('profilePhotoUrl') == ""
+                                  ? SvgPicture.asset(
+                                      'assets/image/person_asset.svg',
+                                    )
+                                  : CircleAvatar(
+                                      radius: 70,
+                                      backgroundImage: NetworkImage(box.get('profilePhotoUrl')),
+                                    )),
                           Text(
                             box.isEmpty ? 'You can add your name' : box.get('userName'),
                             style: const TextStyle(

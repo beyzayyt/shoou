@@ -43,19 +43,19 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
                   fontStyle: FontStyle.italic,
                 ),
               )),
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(),
-              onPressed: () async =>  await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const TakePicturePage()),
-                ),
-              child: const Text(
-                'Your Photos',
-                style: TextStyle(
-                  color: Color.fromRGBO(66, 27, 115, 1),
-                  fontStyle: FontStyle.italic,
-                ),
-              )),
+          // ElevatedButton(
+          //     style: ElevatedButton.styleFrom(),
+          //     onPressed: () async =>  await Navigator.push(
+          //         context,
+          //         MaterialPageRoute(builder: (context) => const TakePicturePage()),
+          //       ),
+          //     child: const Text(
+          //       'Your Photos',
+          //       style: TextStyle(
+          //         color: Color.fromRGBO(66, 27, 115, 1),
+          //         fontStyle: FontStyle.italic,
+          //       ),
+          //     )),
           ValueListenableBuilder(
             valueListenable: Hive.box('userprofile').listenable(),
             builder: (context, box, child) {

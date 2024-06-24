@@ -1,0 +1,15 @@
+{
+        "languagetitle": "Dil Desteği",
+        "lottiedescription": "Lütfen devam etmek için giriş yapınız",
+        "emaildescription": "Mail adresinizi giriniz",
+        "passwordescription": "Şifre giriniz",
+        "authbuttonsignin": "Giriş Yap",
+        "authbuttonsignUp": "Üye Ol",
+        "forgotpassword": "Şifremi Unuttum",
+        "resetpasswordescription": "Kayıt olduğunuz e-mail hesabınız ile istek yollarayak mail adresinize gelen bağlantıdan gerekli şifre değişimini yapabilirsiniz",
+        "resetpassword": "Şifre Sıfırlama",
+        "resetsendrequest": "İstek Yolla",
+        "email": "E-posta",
+        "password": "Şifre",
+        "newuserdescription": "Lütfen bilgilerinizi ekleyin ve sizi tanıyalım!"
+}

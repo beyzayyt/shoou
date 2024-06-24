@@ -1,0 +1,15 @@
+{
+    "languagetitle": "Language Support",
+    "lottiedescription": "Please log in to continue",
+    "emaildescription": "Enter your e-mail address",
+    "passwordescription": "Enter password",
+    "authbuttonsignin": "Sign In",
+    "authbuttonsignUp": "Sign Up",
+    "forgotpassword": "I Forgot My Password",
+    "resetpasswordescription": "You can change the necessary password from the link sent to your e-mail address by sending a request to your registered e-mail account",
+    "resetpassword": "Password Reset",
+    "resetsendrequest": "Send Request",
+    "email": "Email",
+    "password": "Password",
+    "newuserdescription": "Please add your information and let's get to know you!"
+}
