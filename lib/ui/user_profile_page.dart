@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:show_you/data/localization/local_keys.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
 import 'package:show_you/services/cubit/userPhoto/user_photo_cubit.dart';
 import 'package:show_you/ui/home_page.dart';
@@ -36,8 +38,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'MY ACCOUNT',
+        title: Text(
+          LocaleKeys.myAccount.tr(),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -72,7 +74,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                       backgroundImage: NetworkImage(box.get('profilePhotoUrl')),
                                     )),
                           Text(
-                            box.isEmpty ? 'You can add your name' : box.get('userName'),
+                            box.isEmpty ? LocaleKeys.accountnamedescription.tr() : box.get('userName'),
                             style: const TextStyle(
                               fontSize: 16,
                               fontStyle: FontStyle.italic,

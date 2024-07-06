@@ -11,5 +11,22 @@
         "resetsendrequest": "İstek Yolla",
         "email": "E-posta",
         "password": "Şifre",
-        "newuserdescription": "Lütfen bilgilerinizi ekleyin ve sizi tanıyalım!"
+        "newuserdescription": "Lütfen bilgilerinizi ekleyin ve sizi tanıyalım!",
+        "accountnamedescription": "Buraya adınızı ekleyebilirsiniz",
+        "accountBlogs": "Blog Yazıların",
+        "editProfile": "Profilini Düzenle",
+        "logOut": "Çıkış Yap",
+        "myAccount": "Hesabım",
+        "editMyAccount": "Düzenle",
+        "userName": "Adı",
+        "userLastName": "Soyadı",
+        "userNickname": "Kullanıcı nickname",
+        "userMobilePhone": "Telefon",
+        "userBirthDate": "Doğum günü",
+        "save": "Kaydet",
+        "problemShowingBlogs": "Blog yazılarını gösterirken bir sorun oluştu.",
+        "clearAllBlogs": "Tüm bloglarını temizle",
+        "addNewBlog": "Yeni bir blog yazısı ekle",
+        "chooseAndDeleteItem": "Seç ve Sil",
+        "blog": "Blog"
 }

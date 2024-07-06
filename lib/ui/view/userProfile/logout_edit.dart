@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:show_you/data/localization/local_keys.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
 import 'package:show_you/services/cubit/authentication/authentication_cubit.dart';
 import 'package:show_you/services/cubit/authentication/authentication_state.dart';
@@ -33,9 +35,9 @@ class LogOutandEdit extends StatelessWidget {
                       onTap: () async {
                         await context.read<AuthCubit>().signOutUser();
                       },
-                      child: const Text(
-                        "Log out",
-                        style: TextStyle(color: Color.fromRGBO(66, 27, 115, 1), fontStyle: FontStyle.italic),
+                      child: Text(
+                        LocaleKeys.logOut.tr(),
+                        style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1), fontStyle: FontStyle.italic),
                       ));
                 },
               ),

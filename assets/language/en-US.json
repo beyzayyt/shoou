@@ -11,5 +11,22 @@
     "resetsendrequest": "Send Request",
     "email": "Email",
     "password": "Password",
-    "newuserdescription": "Please add your information and let's get to know you!"
+    "newuserdescription": "Please add your information and let's get to know you!",
+    "accountnamedescription": "You can add your name here",
+    "accountBlogs": "Your Blogs",
+    "editProfile": "Edit Profile",
+    "logOut": "Log Out",
+    "myAccount": "My Account",
+    "editMyAccount": "Edit",
+    "userName": "Name",
+    "userLastName": "Lastname",
+    "userNickname": "User nickname",
+    "userMobilePhone": "Phone",
+    "userBirthDate": "Birth date",
+    "save": "Save",
+    "problemShowingBlogs": "There was a problem displaying blog posts.",
+    "clearAllBlogs": "Clear all blogs",
+    "addNewBlog": "Add new blog",
+    "chooseAndDeleteItem": "Choose and Delete",
+    "blog": "Blog"
 }

@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:show_you/data/localization/local_keys.dart';
 import 'package:show_you/services/cubit/userBlog/user_add_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_add_blog_state.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_cubit.dart';
@@ -25,8 +27,8 @@ class _BlogPageState extends State<BlogPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "BLOG",
+        title: Text(
+          LocaleKeys.accountBlogs.tr(),
         ),
         actions: [
           IconButton(
@@ -41,7 +43,7 @@ class _BlogPageState extends State<BlogPage> {
       body: ValueListenableBuilder(
         valueListenable: Hive.box('userid').listenable(),
         builder: (context, box, child) {
-          var userid = box.get('userid');
+          var userid = box.get('userid') ?? '';
           return MultiBlocProvider(
             providers: [
               BlocProvider<UserShowBlogCubit>(
@@ -77,11 +79,11 @@ class _BlogPageState extends State<BlogPage> {
                         padding: const EdgeInsets.all(24.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: UsersBlogList(selectedList: selectedList, blog: state.blogs ?? [], userid: userid),
+                          child: UserBlogList(selectedList: selectedList, blog: state.blogs ?? [], userid: userid),
                         ),
                       );
                     } else {
-                      return const Text("Trouble with blog");
+                      return Text(LocaleKeys.problemShowingBlogs.tr());
                     }
                   },
                   listener: (BuildContext context, UserShowBlogState state) {},
@@ -93,7 +95,7 @@ class _BlogPageState extends State<BlogPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
-                              onPressed: () => context.read<UserClearBlogCubit>().clearUserBlog(userid), child: const Text("Clear All Blogs")),
+                              onPressed: () => context.read<UserClearBlogCubit>().clearUserBlog(userid), child: Text(LocaleKeys.clearAllBlogs.tr())),
                           const SizedBox(
                             width: 16,
                           ),
@@ -105,13 +107,13 @@ class _BlogPageState extends State<BlogPage> {
                                 );
                                 if (context.mounted && result != null) context.read<UserShowBlogCubit>().showUserBlog(userid);
                               },
-                              child: const Text("Add New Blog")),
+                              child: Text(LocaleKeys.addNewBlog.tr())),
                         ],
                       ),
                       ElevatedButton(
                           onPressed: () =>
                               context.read<UserClearBlogCubit>().clearUserBlogItemService(selectedList, userid).whenComplete(() => selectedList = []),
-                          child: const Text("Choose and delete item"))
+                          child: Text(LocaleKeys.chooseAndDeleteItem.tr()))
                     ],
                   );
                 }),

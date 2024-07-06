@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lottie/lottie.dart';
 import 'package:show_you/data/localization/local_keys.dart';
 import 'package:show_you/services/cubit/authentication/authentication_cubit.dart';
 import 'package:show_you/services/cubit/authentication/authentication_state.dart';
@@ -10,7 +9,7 @@ import 'package:show_you/ui/user_profile_page.dart';
 import 'package:show_you/ui/view/loading_animation.dart';
 
 class AuthenticatePage extends StatefulWidget {
-  const AuthenticatePage({Key? key}) : super(key: key);
+  const AuthenticatePage({super.key});
 
   @override
   State<AuthenticatePage> createState() => _SignUpState();

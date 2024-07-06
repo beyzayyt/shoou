@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:show_you/data/localization/local_keys.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
 import 'package:show_you/services/cubit/userInfo/user_information_cubit.dart';
 import 'package:show_you/services/cubit/userInfo/user_information_state.dart';
@@ -50,8 +52,8 @@ class _UserProfileState extends State<UserProfileFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'EDIT ACCOUNT',
+        title: Text(
+          LocaleKeys.editMyAccount.tr(),
         ),
       ),
       body: Center(
@@ -91,7 +93,7 @@ class _UserProfileState extends State<UserProfileFormPage> {
                                           }
                                           return Padding(
                                               padding: const EdgeInsets.only(top: 50.0),
-                                              child: box.get('profilePhotoUrl') == null
+                                              child: box.get('profilePhotoUrl') == ""
                                                   ? SvgPicture.asset(
                                                       'assets/image/person_asset.svg',
                                                     )
@@ -125,31 +127,24 @@ class _UserProfileState extends State<UserProfileFormPage> {
                               },
                             ),
                           ),
-                          // const CircleAvatar(
-                          //   radius: 75,
-                          //   backgroundColor: Colors.white,
-                          //   backgroundImage: NetworkImage(
-                          //     'https://images.unsplash.com/photo-1682687982423-295485af248a?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                          //   ),
-                          // ),
                           const SizedBox(height: 24),
                           UserInformationTextField(
                             userName: userName,
-                            hintText: "User name",
+                            hintText: LocaleKeys.userName.tr(),
                           ),
                           UserInformationTextField(
                             userName: userLastName,
-                            hintText: "User Lastname",
+                            hintText: LocaleKeys.userLastName.tr(),
                           ),
-                          UserInformationTextField(userName: userNickname, hintText: "User Nickname"),
+                          UserInformationTextField(userName: userNickname, hintText: LocaleKeys.userNickname.tr()),
                           UserInformationTextField(
                             userName: userMobilePhone,
-                            hintText: "Mobile Phone",
+                            hintText: LocaleKeys.userMobilePhone.tr(),
                             keyboardType: TextInputType.phone,
                           ),
                           UserInformationTextField(
                             userName: userBirthDate,
-                            hintText: "User Birth Day",
+                            hintText: LocaleKeys.userBirthDate.tr(),
                             keyboardType: TextInputType.datetime,
                           ),
                           const SizedBox(height: 24),
@@ -167,9 +162,9 @@ class _UserProfileState extends State<UserProfileFormPage> {
                                       style: ElevatedButton.styleFrom(),
                                       onPressed: () => context.read<UserInformationCubit>().saveUserInformations(userName.text, userLastName.text,
                                           userNickname.text, userMobilePhone.text, userBirthDate.text, profilePhotoUrl ?? ''),
-                                      child: const Text(
-                                        'Save',
-                                        style: TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
+                                      child: Text(
+                                        LocaleKeys.save.tr(),
+                                        style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
                                       ));
                                 },
                               ),

@@ -1,11 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:show_you/data/localization/local_keys.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
 import 'package:show_you/services/cubit/userInfo/user_information_cubit.dart';
 import 'package:show_you/services/cubit/userInfo/user_information_state.dart';
 import 'package:show_you/ui/create_bloge_page.dart';
-import 'package:show_you/ui/take_picture_page.dart';
 import 'package:show_you/ui/user_profile_form_page.dart';
 
 typedef StringToVoidFunc = void Function(String);
@@ -36,26 +37,13 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
                   MaterialPageRoute(builder: (context) => const BlogPage()),
                 );
               },
-              child: const Text(
-                'Your Blog',
-                style: TextStyle(
+              child: Text(
+                LocaleKeys.accountBlogs.tr(),
+                style: const TextStyle(
                   color: Color.fromRGBO(66, 27, 115, 1),
                   fontStyle: FontStyle.italic,
                 ),
               )),
-          // ElevatedButton(
-          //     style: ElevatedButton.styleFrom(),
-          //     onPressed: () async =>  await Navigator.push(
-          //         context,
-          //         MaterialPageRoute(builder: (context) => const TakePicturePage()),
-          //       ),
-          //     child: const Text(
-          //       'Your Photos',
-          //       style: TextStyle(
-          //         color: Color.fromRGBO(66, 27, 115, 1),
-          //         fontStyle: FontStyle.italic,
-          //       ),
-          //     )),
           ValueListenableBuilder(
             valueListenable: Hive.box('userprofile').listenable(),
             builder: (context, box, child) {
@@ -63,7 +51,7 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
                 create: (context) => UserInformationCubit()..showUserInfo(box.get('documentId') ?? ''),
                 child: BlocListener<UserInformationCubit, UserInformationState>(
                   listener: (context, state) async {
-                    print("listener deneme");
+                    print("listener is trying");
                     if (state is ShowUserInformationCompleted) {
                       print("listener ${state.user!.userLastName}");
                     }
@@ -85,9 +73,9 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
                               await context.read<UserInformationCubit>().showUserInfo(box.get('documentId') ?? '');
                             }
                           },
-                          child: const Text(
-                            'Edit Profile',
-                            style: TextStyle(
+                          child: Text(
+                            LocaleKeys.editProfile.tr(),
+                            style: const TextStyle(
                               color: Color.fromRGBO(66, 27, 115, 1),
                               fontStyle: FontStyle.italic,
                             ),

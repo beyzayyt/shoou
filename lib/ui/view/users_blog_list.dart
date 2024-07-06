@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore: must_be_immutable
-class UsersBlogList extends StatefulWidget {
-  UsersBlogList({super.key, required this.blog, this.selectedList, this.isHomePage = false, this.userid});
+class UserBlogList extends StatefulWidget {
+  UserBlogList({super.key, required this.blog, this.selectedList, this.isHomePage = false, this.userid});
   final List blog;
   List? selectedList;
   final bool isHomePage;
   String? userid;
 
   @override
-  State<UsersBlogList> createState() => _UsersBlogListState();
+  State<UserBlogList> createState() => _UsersBlogListState();
 }
 
 // Padding(
@@ -24,7 +24,7 @@ class UsersBlogList extends StatefulWidget {
 //                                               backgroundImage: NetworkImage(box.get('profilePhotoUrl')),
 //                                             )
 //                           ),
-class _UsersBlogListState extends State<UsersBlogList> {
+class _UsersBlogListState extends State<UserBlogList> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(

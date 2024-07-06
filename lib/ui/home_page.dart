@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:show_you/data/localization/local_keys.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_state.dart';
 import 'package:show_you/services/cubit/userPhoto/user_photo_cubit.dart';
@@ -28,10 +30,9 @@ class HomePage extends StatelessWidget {
                 length: 1,
                 child: Scaffold(
                   appBar: AppBar(
-                    bottom: const TabBar(
+                    bottom: TabBar(
                       tabs: [
-                        // Tab(text: 'Photos'),
-                        Tab(text: 'Blogs'),
+                        Tab(text: LocaleKeys.blog.tr()),
                       ],
                     ),
                   ),
@@ -50,7 +51,7 @@ class HomePage extends StatelessWidget {
                       if (stateshowblog is ShowUserBlogCompleted && stateshowblog.blogs != null)
                         Padding(
                           padding: const EdgeInsets.all(24.0),
-                          child: UsersBlogList(blog: stateshowblog.blogs ?? [], isHomePage: true, userid: box.get('userid') ?? ''),
+                          child: UserBlogList(blog: stateshowblog.blogs ?? [], isHomePage: true, userid: box.get('userid') ?? ''),
                         ),
                     ],
                   ),
