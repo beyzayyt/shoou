@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:show_you/data/localization/local_keys.dart';
 import 'package:show_you/services/cubit/authentication/authentication_cubit.dart';
 import 'package:show_you/services/cubit/authentication/authentication_state.dart';
 import 'package:show_you/ui/user_profile_page.dart';
 import 'package:show_you/ui/view/loading_animation.dart';
+import 'package:show_you/ui/view/login_register_logo.dart';
 
 class AuthenticatePage extends StatefulWidget {
   const AuthenticatePage({super.key});
@@ -103,7 +103,8 @@ class _SignUpState extends State<AuthenticatePage> {
                       return Column(
                         children: [
                           state is SignUpFailed ? Text(state.errorMessage) : const SizedBox.shrink(),
-                          state is SignUpCompliting ? const LoadingAnimation() : const SizedBox.shrink(),
+                          state is SignInFailed ? Text(state.errorMessage) : const SizedBox.shrink(),
+                          state is SignUpCompliting || state is SignInCompliting ? const LoadingAnimation() : const SizedBox.shrink(),
                           Row(
                             children: [
                               Expanded(
@@ -127,29 +128,6 @@ class _SignUpState extends State<AuthenticatePage> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class LoginRegisterTitleLogo extends StatelessWidget {
-  const LoginRegisterTitleLogo({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SvgPicture.asset(
-          'assets/image/first_title.svg',
-        ),
-        const SizedBox(
-          height: 16,
-        ),
-        SvgPicture.asset(
-          'assets/image/second_title.svg',
-        ),
-      ],
     );
   }
 }
