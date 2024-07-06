@@ -6,8 +6,8 @@ import 'package:show_you/data/localization/local_keys.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
 import 'package:show_you/services/cubit/userInfo/user_information_cubit.dart';
 import 'package:show_you/services/cubit/userInfo/user_information_state.dart';
-import 'package:show_you/ui/create_bloge_page.dart';
-import 'package:show_you/ui/user_profile_form_page.dart';
+import 'package:show_you/ui/page/create_bloge_page.dart';
+import 'package:show_you/ui/page/user_profile_form_page.dart';
 
 typedef StringToVoidFunc = void Function(String);
 

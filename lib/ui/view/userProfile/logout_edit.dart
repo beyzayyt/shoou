@@ -5,7 +5,7 @@ import 'package:show_you/data/localization/local_keys.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
 import 'package:show_you/services/cubit/authentication/authentication_cubit.dart';
 import 'package:show_you/services/cubit/authentication/authentication_state.dart';
-import 'package:show_you/ui/authentication_page.dart';
+import 'package:show_you/ui/page/authentication_page.dart';
 
 // ignore: must_be_immutable
 class LogOutandEdit extends StatelessWidget {

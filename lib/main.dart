@@ -8,8 +8,8 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:show_you/data/localization/app_constant.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
-import 'package:show_you/ui/authentication_page.dart';
-import 'package:show_you/ui/home_page.dart';
+import 'package:show_you/ui/page/authentication_page.dart';
+import 'package:show_you/ui/page/home_page.dart';
 import 'firebase_options.dart';
 
 late final FirebaseAuth auth;
