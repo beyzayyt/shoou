@@ -52,14 +52,9 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  body: Container(
-                    child: (stateshowblog is ShowUserBlogCompleted && stateshowblog.blogs != null)
-                        ? Padding(
-                            padding: const EdgeInsets.all(24.0),
-                            child: UserBlogList(blog: stateshowblog.blogs ?? [], isHomePage: true, userid: box.get('userid') ?? ''),
-                          )
-                        : const SizedBox.shrink(),
-                  ),
+                  body: (stateshowblog is ShowUserBlogCompleted && stateshowblog.blogs != null)
+                      ? UserBlogList(blog: stateshowblog.blogs ?? [], isHomePage: true, userid: box.get('userid') ?? '')
+                      : const SizedBox.shrink(),
                   floatingActionButton: FloatingActionButton(
                     onPressed: () async {
                       await Navigator.push(
