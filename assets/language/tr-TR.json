@@ -28,5 +28,11 @@
         "clearAllBlogs": "Tüm bloglarını temizle",
         "addNewBlog": "Yeni bir blog yazısı ekle",
         "chooseAndDeleteItem": "Seç ve Sil",
-        "blog": "Blog"
+        "blog": "Blog",
+        "recoverPassword":"Şifre Değiştir",
+        "recoverPasswordSuccessfulDescription" :"Şifrenizi yenilemek için bağlantı mail adresinize gönderildi.",
+        "recoverPasswordUnsuccessfulDescription" :"Bağlantı gönderilirken bir hata oluştu.",
+        "emptyEmail":"Email alanı boş bırakılamaz",
+        "emptyPassword" :"Şifre alanı boş bırakılamaz"
+
 }

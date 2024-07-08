@@ -6,7 +6,7 @@ abstract class LocaleKeys {
   static const authbuttonsignin = 'authbuttonsignin';
   static const authbuttonsignUp = 'authbuttonsignUp';
   static const forgotpassword = 'forgotpassword';
-  static const resetpasswordescription = 'resetpassworddescription';
+  static const resetpasswordescription = 'resetpasswordescription';
   static const resetpassword = 'resetpassword';
   static const resetsendrequest = 'resetsendrequest';
   static const email = 'email';
@@ -29,10 +29,9 @@ abstract class LocaleKeys {
   static const addNewBlog = 'addNewBlog';
   static const chooseAndDeleteItem = 'chooseAndDeleteItem';
   static const blog = 'blog';
-
-
-
-
-
-
+  static const recoverPassword = 'recoverPassword';
+  static const recoverPasswordSuccessfulDescription = 'recoverPasswordSuccessfulDescription';
+  static const recoverPasswordUnsuccessfulDescription = 'recoverPasswordUnsuccessfulDescription';
+  static const emptyEmail = 'emptyEmail';
+  static const emptyPassword = 'emptyPassword';
 }

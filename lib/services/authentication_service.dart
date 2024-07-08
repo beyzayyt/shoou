@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:show_you/data/models/user_model.dart';
+import 'package:show_you/firebase_exceptions.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final User? firebaseUser = FirebaseAuth.instance.currentUser;
+  static late AuthStatus _status;
+
   Future<UserModel> signUp(
     String email,
     String password,
@@ -47,7 +50,7 @@ class AuthService {
 
       final User? firebaseUser = userCredential.user;
       var box = await Hive.openBox('userid');
-      if(firebaseUser != null) box.put('userid', firebaseUser.uid);
+      if (firebaseUser != null) box.put('userid', firebaseUser.uid);
       return UserModel(
         id: firebaseUser!.uid,
         email: firebaseUser.email ?? '',
@@ -56,5 +59,14 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       return UserModel(errorMessage: e.code);
     }
+  }
+
+  Future<AuthStatus> resetPassword({required String email}) async {
+    await _firebaseAuth
+        .sendPasswordResetEmail(email: email)
+        .then((value) => _status = AuthStatus.successful)
+        .catchError((e) => _status = AuthExceptionHandler.handleAuthException(e));
+
+    return _status;
   }
 }

@@ -54,4 +54,20 @@ class AuthCubit extends Cubit<AuthState> {
       emit(SignOutFailed('Sign out user failed'));
     }
   }
+
+  Future<void> resetPassword(String email) async {
+    emit(ResetPasswordInitial());
+    try {
+      emit(ResetPasswordCompliting());
+      var result = await authService.resetPassword(email: email);
+
+      if (result.name.isNotEmpty) {
+        emit(ResetPasswordCompleted(true));
+      } else {
+        emit(ResetPasswordFailed("Reset Password failed"));
+      }
+    } catch (e) {
+      emit(ResetPasswordFailed('Reset Password failed'));
+    }
+  }
 }

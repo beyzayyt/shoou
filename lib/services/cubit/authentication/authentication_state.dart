@@ -22,7 +22,6 @@ class SignUpFailed extends AuthState {
   List<Object> get props => [errorMessage];
 }
 
-
 class SignInInitial extends AuthState {}
 
 class SignInCompliting extends AuthState {}
@@ -55,6 +54,24 @@ class SignOutCompleted extends AuthState {
 class SignOutFailed extends AuthState {
   final String errorMessage;
   SignOutFailed(this.errorMessage);
+
+  List<Object> get props => [errorMessage];
+}
+
+class ResetPasswordInitial extends AuthState {}
+
+class ResetPasswordCompliting extends AuthState {}
+
+class ResetPasswordCompleted extends AuthState {
+  final bool isResetPAssword;
+  ResetPasswordCompleted(this.isResetPAssword);
+
+  List<Object> get props => [isResetPAssword];
+}
+
+class ResetPasswordFailed extends AuthState {
+  final String errorMessage;
+  ResetPasswordFailed(this.errorMessage);
 
   List<Object> get props => [errorMessage];
 }
