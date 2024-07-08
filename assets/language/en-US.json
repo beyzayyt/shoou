@@ -29,8 +29,11 @@
     "addNewBlog": "Add new blog",
     "chooseAndDeleteItem": "Choose and Delete",
     "blog": "Blog",
-    "changeLanguage" : "Language Option",
-    "english" : "English",
-    "turkish" : "Turkish",
-    "apply": "Apply"
+    "changeLanguage": "Language Option",
+    "english": "English",
+    "turkish": "Turkish",
+    "apply": "Apply",
+    "goodMorning": "Good Morning",
+    "goodAfternoon": "Good Afternoon",
+    "goodEvening": "Good Evening"
 }

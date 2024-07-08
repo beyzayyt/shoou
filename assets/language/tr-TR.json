@@ -37,5 +37,8 @@
         "changeLanguage": "Dil Seçeneği",
         "english": "İngilizce",
         "turkish": "Türkçe",
-        "apply" : "Uygula"
+        "apply": "Uygula",
+        "goodMorning": "Günaydın",
+        "goodAfternoon":"İyi günler",
+        "goodEvening": "İyi Akşamlar"
 }

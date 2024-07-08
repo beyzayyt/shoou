@@ -41,7 +41,7 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
                 LocaleKeys.accountBlogs.tr(),
                 style: const TextStyle(
                   color: Color.fromRGBO(66, 27, 115, 1),
-                  fontStyle: FontStyle.italic,
+                  // fontStyle: FontStyle.italic,
                 ),
               )),
           ValueListenableBuilder(
@@ -77,7 +77,7 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
                             LocaleKeys.editProfile.tr(),
                             style: const TextStyle(
                               color: Color.fromRGBO(66, 27, 115, 1),
-                              fontStyle: FontStyle.italic,
+                              // fontStyle: FontStyle.italic,
                             ),
                           ));
                     },

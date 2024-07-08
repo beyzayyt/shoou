@@ -78,7 +78,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                             box.isEmpty ? LocaleKeys.accountnamedescription.tr() : box.get('userName'),
                             style: const TextStyle(
                               fontSize: 16,
-                              fontStyle: FontStyle.italic,
+                              // fontStyle: FontStyle.italic,
                               color: Color.fromRGBO(66, 27, 115, 1),
                             ),
                           ),

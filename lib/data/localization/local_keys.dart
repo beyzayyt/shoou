@@ -38,4 +38,8 @@ abstract class LocaleKeys {
   static const english = 'english';
   static const turkish = 'turkish';
   static const apply = 'apply';
+  static const goodMorning = 'goodMorning';
+  static const goodAfternoon = 'goodAfternoon';
+  static const goodEvening = 'apply';
+
 }

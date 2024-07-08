@@ -37,7 +37,7 @@ class LogOutandEdit extends StatelessWidget {
                       },
                       child: Text(
                         LocaleKeys.logOut.tr(),
-                        style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1), fontStyle: FontStyle.italic),
+                        style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
                       ));
                 },
               ),

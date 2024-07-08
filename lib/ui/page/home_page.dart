@@ -14,6 +14,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+
+    String formattedDate = "${now.day}/${now.month}/${now.year}";
     return ValueListenableBuilder(
       valueListenable: Hive.box('userid').listenable(),
       builder: (context, box, child) {
@@ -30,6 +33,24 @@ class HomePage extends StatelessWidget {
                 length: 1,
                 child: Scaffold(
                   appBar: AppBar(
+                    centerTitle: false,
+                    automaticallyImplyLeading: false,
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          getGreeting(),
+                          style: const TextStyle(fontSize: 24),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          formattedDate,
+                          style: const TextStyle(fontSize: 16),
+                        )
+                      ],
+                    ),
                     bottom: TabBar(
                       tabs: [
                         Tab(text: LocaleKeys.blog.tr()),
@@ -73,5 +94,17 @@ class HomePage extends StatelessWidget {
         );
       },
     );
+  }
+
+  String getGreeting() {
+    final hour = DateTime.now().hour;
+
+    if (hour < 12) {
+      return LocaleKeys.goodMorning.tr();
+    } else if (hour < 18) {
+      return LocaleKeys.goodAfternoon.tr();
+    } else {
+      return LocaleKeys.goodEvening.tr();
+    }
   }
 }
