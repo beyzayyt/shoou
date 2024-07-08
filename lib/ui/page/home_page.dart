@@ -51,30 +51,14 @@ class HomePage extends StatelessWidget {
                         )
                       ],
                     ),
-                    bottom: TabBar(
-                      tabs: [
-                        Tab(text: LocaleKeys.blog.tr()),
-                      ],
-                    ),
                   ),
-                  body: TabBarView(
-                    children: [
-                      // BlocBuilder<UserPhotoCubit, UserPhotoState>(
-                      //   builder: (context, fetchuserphotostate) {
-                      //     if (fetchuserphotostate is FetchUserPhotoCompliting) {
-                      //       return const LoadingAnimation();
-                      //     }
-                      //     return fetchuserphotostate is FetchUserPhotoCompleted
-                      //         ? UserPhotoListView(images: fetchuserphotostate.images)
-                      //         : const SizedBox.shrink();
-                      //   },
-                      // ),
-                      if (stateshowblog is ShowUserBlogCompleted && stateshowblog.blogs != null)
-                        Padding(
-                          padding: const EdgeInsets.all(24.0),
-                          child: UserBlogList(blog: stateshowblog.blogs ?? [], isHomePage: true, userid: box.get('userid') ?? ''),
-                        ),
-                    ],
+                  body: Container(
+                    child: (stateshowblog is ShowUserBlogCompleted && stateshowblog.blogs != null)
+                        ? Padding(
+                            padding: const EdgeInsets.all(24.0),
+                            child: UserBlogList(blog: stateshowblog.blogs ?? [], isHomePage: true, userid: box.get('userid') ?? ''),
+                          )
+                        : const SizedBox.shrink(),
                   ),
                   floatingActionButton: FloatingActionButton(
                     onPressed: () async {
