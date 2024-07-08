@@ -34,4 +34,8 @@ abstract class LocaleKeys {
   static const recoverPasswordUnsuccessfulDescription = 'recoverPasswordUnsuccessfulDescription';
   static const emptyEmail = 'emptyEmail';
   static const emptyPassword = 'emptyPassword';
+  static const changeLanguage = 'changeLanguage';
+  static const english = 'english';
+  static const turkish = 'turkish';
+  static const apply = 'apply';
 }

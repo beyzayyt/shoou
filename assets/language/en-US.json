@@ -28,5 +28,9 @@
     "clearAllBlogs": "Clear all blogs",
     "addNewBlog": "Add new blog",
     "chooseAndDeleteItem": "Choose and Delete",
-    "blog": "Blog"
+    "blog": "Blog",
+    "changeLanguage" : "Language Option",
+    "english" : "English",
+    "turkish" : "Turkish",
+    "apply": "Apply"
 }
