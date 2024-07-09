@@ -34,6 +34,7 @@ class _SignUpState extends State<AuthenticatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 240, 220, 160),
       body: Padding(
         padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 10, left: 20, right: 20),
         child: Form(

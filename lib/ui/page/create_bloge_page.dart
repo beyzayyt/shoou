@@ -33,7 +33,7 @@ class _BlogPageState extends State<BlogPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.cleaning_services_outlined),
-            tooltip: 'Open shopping cart',
+            tooltip: 'cleaning',
             onPressed: () {
               print("selected list $selectedList");
             },
@@ -75,13 +75,7 @@ class _BlogPageState extends State<BlogPage> {
                     if (state is ShowUserBlogCompliting) {
                       return const LoadingAnimation();
                     } else if (state is ShowUserBlogCompleted && state.blogs != null) {
-                      return Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: UserBlogList(selectedList: selectedList, blog: state.blogs ?? [], userid: userid),
-                        ),
-                      );
+                      return UserBlogList(selectedList: selectedList, blog: state.blogs ?? [], userid: userid);
                     } else {
                       return Text(LocaleKeys.problemShowingBlogs.tr());
                     }
@@ -89,10 +83,9 @@ class _BlogPageState extends State<BlogPage> {
                   listener: (BuildContext context, UserShowBlogState state) {},
                 ),
                 BlocBuilder<UserShowBlogCubit, UserShowBlogState>(builder: (context, state) {
-                  return Column(
+                  return Row(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      Column(
                         children: [
                           ElevatedButton(
                               onPressed: () => context.read<UserClearBlogCubit>().clearUserBlog(userid), child: Text(LocaleKeys.clearAllBlogs.tr())),
@@ -108,12 +101,14 @@ class _BlogPageState extends State<BlogPage> {
                                 if (context.mounted && result != null) context.read<UserShowBlogCubit>().showUserBlog(userid);
                               },
                               child: Text(LocaleKeys.addNewBlog.tr())),
+                          ElevatedButton(
+                              onPressed: () => context
+                                  .read<UserClearBlogCubit>()
+                                  .clearUserBlogItemService(selectedList, userid)
+                                  .whenComplete(() => selectedList = []),
+                              child: Text(LocaleKeys.chooseAndDeleteItem.tr()))
                         ],
                       ),
-                      ElevatedButton(
-                          onPressed: () =>
-                              context.read<UserClearBlogCubit>().clearUserBlogItemService(selectedList, userid).whenComplete(() => selectedList = []),
-                          child: Text(LocaleKeys.chooseAndDeleteItem.tr()))
                     ],
                   );
                 }),
@@ -179,7 +174,7 @@ class CreateBlogPage extends StatelessWidget {
                           onPressed: () async {
                             await context
                                 .read<UserAddBlogCubit>()
-                                .addUserBlog(titleController.text, contentController.text, userid, userProfilePhoto);
+                                .addUserBlog(titleController.text.trim(), contentController.text.trim(), userid, userProfilePhoto);
                           },
                           child: const Text('Submit'),
                         );

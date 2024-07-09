@@ -29,44 +29,66 @@ class HomePage extends StatelessWidget {
           ],
           child: BlocBuilder<UserShowBlogCubit, UserShowBlogState>(
             builder: (context, stateshowblog) {
-              return DefaultTabController(
-                length: 1,
-                child: Scaffold(
-                  appBar: AppBar(
-                    centerTitle: false,
-                    automaticallyImplyLeading: false,
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          getGreeting(),
-                          style: const TextStyle(fontSize: 24),
+              return Scaffold(
+                appBar: AppBar(
+                  forceMaterialTransparency: true,
+                  centerTitle: false,
+                  automaticallyImplyLeading: false,
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        getGreeting(),
+                        style: TextStyle(
+                          fontSize: 24,
+                          color: Theme.of(context).primaryColor,
                         ),
-                        const SizedBox(
-                          height: 10,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        formattedDate,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).primaryColor,
                         ),
-                        Text(
-                          formattedDate,
-                          style: const TextStyle(fontSize: 16),
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   ),
-                  body: (stateshowblog is ShowUserBlogCompleted && stateshowblog.blogs != null)
-                      ? UserBlogList(blog: stateshowblog.blogs ?? [], isHomePage: true, userid: box.get('userid') ?? '')
-                      : const SizedBox.shrink(),
-                  floatingActionButton: FloatingActionButton(
-                    onPressed: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const UserProfilePage()),
-                      );
-
-                      if (context.mounted) context.read<UserShowBlogCubit>().showUserBlog(box.get('userid'));
-                    },
-                    child: const Icon(Icons.person),
-                  ),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16.0),
+                      child: GestureDetector(
+                          onTap: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const UserProfilePage()),
+                            );
+                            if (context.mounted) context.read<UserShowBlogCubit>().showUserBlog(box.get('userid'));
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.person,
+                                size: 34,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              Text(
+                                LocaleKeys.myAccount.tr(),
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              )
+                            ],
+                          )),
+                    )
+                  ],
                 ),
+                body: (stateshowblog is ShowUserBlogCompleted && stateshowblog.blogs != null)
+                    ? UserBlogList(blog: stateshowblog.blogs ?? [], isHomePage: true, userid: box.get('userid') ?? '')
+                    : const SizedBox.shrink(),
               );
             },
           ),

@@ -62,9 +62,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(
             iconTheme: IconThemeData(color: Colors.white),
             backgroundColor: Color.fromARGB(255, 235, 232, 239),
-            titleTextStyle: TextStyle(
-              fontSize: 20,
-            )),
+            titleTextStyle: TextStyle(fontSize: 20, color: Colors.black)),
         useMaterial3: true,
       ),
       home: StreamBuilder<User?>(

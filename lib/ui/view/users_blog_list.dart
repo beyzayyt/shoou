@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 // ignore: must_be_immutable
 class UserBlogList extends StatefulWidget {
@@ -14,14 +13,21 @@ class UserBlogList extends StatefulWidget {
 }
 
 class _UsersBlogListState extends State<UserBlogList> {
+  late List<bool>? showFullText;
+
+  @override
+  void initState() {
+    super.initState();
+    showFullText = widget.isHomePage ? List<bool>.filled(widget.blog.length, false) : null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 28.0),
+      padding: const EdgeInsets.only(top: 20.0),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height / 1.5,
+        height: widget.isHomePage ? null : MediaQuery.of(context).size.height / 2,
         child: ListView.separated(
-          // separatorBuilder: (context, index) => !widget.isHomePage ? const SizedBox(height: 4) : const Divider(),
           separatorBuilder: (context, index) => const SizedBox(height: 14),
           itemCount: widget.blog.length,
           itemBuilder: (context, index) {
@@ -45,42 +51,67 @@ class _UsersBlogListState extends State<UserBlogList> {
                             )
                           : const SizedBox.shrink(),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width - 20,
-                        child: Card(
-                          color: Colors.white,
-                          child: Expanded(
-                            child: Row(
-                              children: [
-                                (data['userProfilePhoto'] == null || data['userProfilePhoto'].isEmpty)
-                                    ? SvgPicture.asset(
-                                        'assets/image/person_asset.svg',
-                                      )
-                                    : CircleAvatar(
-                                        backgroundImage: NetworkImage(data['userProfilePhoto']),
+                        width: widget.isHomePage ? MediaQuery.of(context).size.width - 20 : MediaQuery.of(context).size.width - 100,
+                        child: GestureDetector(
+                          onTap: () => _toggleText(index),
+                          child: Card(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                            elevation: 2,
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      (data['userProfilePhoto'] == null || data['userProfilePhoto'].isEmpty)
+                                          ? const Icon(
+                                              Icons.person,
+                                              size: 30,
+                                            )
+                                          : SizedBox(
+                                              width: 30,
+                                              child: CircleAvatar(
+                                                backgroundImage: NetworkImage(data['userProfilePhoto']),
+                                              ),
+                                            ),
+                                      const SizedBox(
+                                        width: 24,
                                       ),
-                                const SizedBox(
-                                  width: 24,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      data['username'] != null ? data['username'].toString().toUpperCase() : 'Anonymous',
-                                      style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
-                                    ),
-                                    Text(
-                                      data['title'] ?? '',
-                                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                                    ),
-                                    Text(
-                                      data['content'] ?? '',
-                                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
-                                      maxLines: widget.isHomePage ? null : 2,
-                                      overflow: widget.isHomePage ? null : TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              data['username'] != null ? data['username'].toString().toUpperCase() : 'Anonymous',
+                                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
+                                            ),
+                                            Text(
+                                              data['title'] ?? '',
+                                              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black54),
+                                            ),
+                                            Text(
+                                              data['content'] ?? '',
+                                              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.black87),
+                                              maxLines: widget.isHomePage ? (!showFullText![index] ? 2 : null) : null,
+                                              overflow: widget.isHomePage ? (!showFullText![index] ? TextOverflow.ellipsis : null) : null,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      HomePageIconButton(homeicon: HomeIcons.like),
+                                      HomePageIconButton(homeicon: HomeIcons.commnet),
+                                      HomePageIconButton(homeicon: HomeIcons.share),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -92,5 +123,47 @@ class _UsersBlogListState extends State<UserBlogList> {
         ),
       ),
     );
+  }
+
+  void _toggleText(int index) {
+    setState(() {
+      showFullText![index] = !showFullText![index];
+    });
+  }
+}
+
+enum HomeIcons {
+  like,
+  commnet,
+  share,
+}
+
+// ignore: must_be_immutable
+class HomePageIconButton extends StatelessWidget {
+  HomeIcons? homeicon;
+  HomePageIconButton({
+    this.homeicon,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      iconSize: 20,
+      icon: getIcon(homeicon!),
+      color: Theme.of(context).primaryColor,
+      onPressed: () {
+        // Handle like button press
+      },
+    );
+  }
+
+  Icon getIcon(HomeIcons icon) {
+    if (icon == HomeIcons.like) {
+      return const Icon(Icons.thumb_up);
+    } else if (icon == HomeIcons.commnet) {
+      return const Icon(Icons.comment);
+    }
+    return const Icon(Icons.share);
   }
 }
