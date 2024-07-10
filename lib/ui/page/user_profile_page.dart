@@ -9,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:show_you/data/localization/local_keys.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
 import 'package:show_you/services/cubit/userPhoto/user_photo_cubit.dart';
-import 'package:show_you/ui/page/user_account_page.dart';
 import 'package:show_you/ui/page/home_page.dart';
 import 'package:show_you/ui/view/userProfile/change_language.dart';
 import 'package:show_you/ui/view/userProfile/logout_edit.dart';

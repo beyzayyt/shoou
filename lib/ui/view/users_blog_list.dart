@@ -24,103 +24,110 @@ class _UsersBlogListState extends State<UserBlogList> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: SizedBox(
-        height: widget.isHomePage ? null : MediaQuery.of(context).size.height / 2,
-        child: ListView.separated(
-          separatorBuilder: (context, index) => const SizedBox(height: 14),
-          itemCount: widget.blog.length,
-          itemBuilder: (context, index) {
-            Map<String, dynamic> data = widget.blog[index] as Map<String, dynamic>;
-            return widget.isHomePage || data['userid'] == widget.userid
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      !widget.isHomePage
-                          ? Checkbox(
-                              value: widget.selectedList?.contains(index),
-                              onChanged: (bool? newValue) {
-                                setState(() {
-                                  if (newValue!) {
-                                    widget.selectedList?.add(index);
-                                  } else {
-                                    widget.selectedList?.remove(index);
-                                  }
-                                });
-                              },
-                            )
-                          : const SizedBox.shrink(),
-                      SizedBox(
-                        width: widget.isHomePage ? MediaQuery.of(context).size.width - 20 : MediaQuery.of(context).size.width - 100,
-                        child: GestureDetector(
-                          onTap: () => _toggleText(index),
-                          child: Card(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                            elevation: 2,
-                            color: Colors.white,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      (data['userProfilePhoto'] == null || data['userProfilePhoto'].isEmpty)
-                                          ? const Icon(
-                                              Icons.person,
-                                              size: 30,
-                                            )
-                                          : SizedBox(
-                                              width: 30,
-                                              child: CircleAvatar(
-                                                backgroundImage: NetworkImage(data['userProfilePhoto']),
-                                              ),
+      padding: EdgeInsets.only(top: widget.isHomePage ? 20.0 : 0),
+      child: ListView.separated(
+        separatorBuilder: (context, index) => const SizedBox(height: 14),
+        itemCount: widget.blog.length,
+        itemBuilder: (context, index) {
+          Map<String, dynamic> data = widget.blog[index] as Map<String, dynamic>;
+          return widget.isHomePage || data['userid'] == widget.userid
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 20,
+                      child: GestureDetector(
+                        onTap: () => _toggleText(index),
+                        child: Card(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          elevation: 2,
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    !widget.isHomePage
+                                        ? SizedBox(
+                                            width: 50,
+                                            height: 34,
+                                            child: Row(
+                                              children: [
+                                                Checkbox(
+                                                  value: widget.selectedList?.contains(index),
+                                                  onChanged: (bool? newValue) {
+                                                    setState(() {
+                                                      if (newValue!) {
+                                                        widget.selectedList?.add(index);
+                                                      } else {
+                                                        widget.selectedList?.remove(index);
+                                                      }
+                                                    });
+                                                  },
+                                                ),
+                                              ],
                                             ),
-                                      const SizedBox(
-                                        width: 24,
+                                          )
+                                        : const SizedBox.shrink(),
+                                    (data['userProfilePhoto'] == null || data['userProfilePhoto'].isEmpty)
+                                        ? const Icon(
+                                            Icons.person,
+                                            size: 30,
+                                          )
+                                        : SizedBox(
+                                            width: 30,
+                                            child: CircleAvatar(
+                                              backgroundImage: NetworkImage(data['userProfilePhoto']),
+                                            ),
+                                          ),
+                                    const SizedBox(
+                                      width: 24,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            data['username'] != null ? data['username'].toString().toUpperCase() : 'Anonymous',
+                                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
+                                          ),
+                                          Text(
+                                            data['title'] ?? '',
+                                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black54),
+                                          ),
+                                          Text(
+                                            data['content'] ?? '',
+                                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.black87),
+                                            maxLines: widget.isHomePage ? (!showFullText![index] ? 2 : null) : null,
+                                            overflow: widget.isHomePage ? (!showFullText![index] ? TextOverflow.ellipsis : null) : null,
+                                          ),
+                                        ],
                                       ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              data['username'] != null ? data['username'].toString().toUpperCase() : 'Anonymous',
-                                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
-                                            ),
-                                            Text(
-                                              data['title'] ?? '',
-                                              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black54),
-                                            ),
-                                            Text(
-                                              data['content'] ?? '',
-                                              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Colors.black87),
-                                              maxLines: widget.isHomePage ? (!showFullText![index] ? 2 : null) : null,
-                                              overflow: widget.isHomePage ? (!showFullText![index] ? TextOverflow.ellipsis : null) : null,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      HomePageIconButton(homeicon: HomeIcons.like),
-                                      HomePageIconButton(homeicon: HomeIcons.commnet),
-                                      HomePageIconButton(homeicon: HomeIcons.share),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    HomePageIconButton(homeicon: HomeIcons.like),
+                                    HomePageIconButton(homeicon: HomeIcons.commnet),
+                                    HomePageIconButton(homeicon: HomeIcons.share),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  )
-                : const SizedBox.shrink();
-          },
-        ),
+                    ),
+                  ],
+                )
+              : const SizedBox(
+                  height: 0,
+                );
+        },
       ),
     );
   }
@@ -153,7 +160,7 @@ class HomePageIconButton extends StatelessWidget {
       icon: getIcon(homeicon!),
       color: Theme.of(context).primaryColor,
       onPressed: () {
-        // Handle like button press
+        // Handle button press
       },
     );
   }

@@ -12,9 +12,6 @@ import 'package:show_you/services/cubit/userBlog/user_blog_state.dart';
 import 'package:show_you/services/cubit/userBlog/user_clear_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_clear_blog_state.dart';
 import 'package:show_you/ui/view/loading_animation.dart';
-import 'package:show_you/ui/view/userProfile/change_language.dart';
-import 'package:show_you/ui/view/userProfile/logout_edit.dart';
-import 'package:show_you/ui/view/userProfile/user_profile_options.dart';
 import 'package:show_you/ui/view/users_blog_list.dart';
 
 class UserAccountPage extends StatefulWidget {
@@ -33,18 +30,13 @@ class _UserAccountPageState extends State<UserAccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          LocaleKeys.accountBlogs.tr(),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.cleaning_services_outlined),
-            tooltip: 'cleaning',
-            onPressed: () {
-              print("selected list $selectedList");
-            },
-          ),
-        ],
+        forceMaterialTransparency: true,
+        centerTitle: true,
+        title: Text(LocaleKeys.myAccount.tr(),
+            style: TextStyle(
+              fontSize: 24,
+              color: Theme.of(context).primaryColor,
+            )),
       ),
       body: ValueListenableBuilder(
         valueListenable: Hive.box('userid').listenable(),
@@ -86,7 +78,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
                           return Column(
                             children: [
                               Padding(
-                                  padding: const EdgeInsets.only(top: 50.0),
+                                  padding: const EdgeInsets.only(top: 10.0),
                                   child: box.get('profilePhotoUrl') == null || box.get('profilePhotoUrl') == ""
                                       ? SvgPicture.asset(
                                           'assets/image/person_asset.svg',
@@ -109,58 +101,63 @@ class _UserAccountPageState extends State<UserAccountPage> {
                     ),
                   ]),
                 ),
-                UserProfileEdit(
-                  savedUserModel: savedUserModel,
-                  onSubmit: (SavedUserModel value) => {
-                    setState(() {
-                      savedUserModel = value;
-                    })
-                  },
-                ),
-                LogOut(
-                  savedUserModel: savedUserModel,
-                ),
-                ChangeLanguage(savedUserModel: savedUserModel),
                 BlocBuilder<UserShowBlogCubit, UserShowBlogState>(builder: (context, state) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      InkWell(
-                          onTap: () async {
-                            await context.read<UserClearBlogCubit>().clearUserBlog(userid);
-                          },
-                          child: Text(
-                            LocaleKeys.clearAllBlogs.tr(),
-                            style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
-                          )),
-                      InkWell(
-                          onTap: () async {
-                            var result = await Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => CreateBlogPage(userid: userid)),
-                            );
-                            if (context.mounted && result != null) context.read<UserShowBlogCubit>().showUserBlog(userid);
-                          },
-                          child: Text(
-                            LocaleKeys.addNewBlog.tr(),
-                            style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
-                          )),
-                      InkWell(
-                          onTap: () =>
-                              context.read<UserClearBlogCubit>().clearUserBlogItemService(selectedList, userid).whenComplete(() => selectedList = []),
-                          child: Text(
-                            LocaleKeys.chooseAndDeleteItem.tr(),
-                            style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
-                          )),
-                    ],
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 18.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        InkWell(
+                            onTap: () async {
+                              await context.read<UserClearBlogCubit>().clearUserBlog(userid);
+                            },
+                            child: Text(
+                              LocaleKeys.clearAllBlogs.tr(),
+                              style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
+                            )),
+                        InkWell(
+                            onTap: () async {
+                              var result = await Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => CreateBlogPage(userid: userid)),
+                              );
+                              if (context.mounted && result != null) context.read<UserShowBlogCubit>().showUserBlog(userid);
+                            },
+                            child: Text(
+                              LocaleKeys.addNewBlog.tr(),
+                              style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
+                            )),
+                        InkWell(
+                            onTap: () => context
+                                .read<UserClearBlogCubit>()
+                                .clearUserBlogItemService(selectedList, userid)
+                                .whenComplete(() => selectedList = []),
+                            child: Text(
+                              LocaleKeys.chooseAndDeleteItem.tr(),
+                              style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
+                            )),
+                      ],
+                    ),
                   );
                 }),
+                // UserProfileEdit(
+                //   savedUserModel: savedUserModel,
+                //   onSubmit: (SavedUserModel value) => {
+                //     setState(() {
+                //       savedUserModel = value;
+                //     })
+                //   },
+                // ),
+                // LogOut(
+                //   savedUserModel: savedUserModel,
+                // ),
+                // ChangeLanguage(savedUserModel: savedUserModel),
                 BlocConsumer<UserShowBlogCubit, UserShowBlogState>(
                   builder: (context, state) {
                     if (state is ShowUserBlogCompliting) {
                       return const LoadingAnimation();
                     } else if (state is ShowUserBlogCompleted && state.blogs != null) {
-                      return UserBlogList(selectedList: selectedList, blog: state.blogs ?? [], userid: userid);
+                      return Expanded(child: UserBlogList(selectedList: selectedList, blog: state.blogs ?? [], userid: userid));
                     } else {
                       return Text(LocaleKeys.problemShowingBlogs.tr());
                     }

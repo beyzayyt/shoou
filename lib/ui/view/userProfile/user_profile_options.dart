@@ -32,9 +32,7 @@ class _UserProfileEditState extends State<UserProfileEdit> {
             create: (context) => UserInformationCubit()..showUserInfo(box.get('documentId') ?? ''),
             child: BlocListener<UserInformationCubit, UserInformationState>(
               listener: (context, state) async {
-                print("listener is trying");
                 if (state is ShowUserInformationCompleted) {
-                  print("listener ${state.user!.userLastName}");
                 }
               },
               child: BlocBuilder<UserInformationCubit, UserInformationState>(

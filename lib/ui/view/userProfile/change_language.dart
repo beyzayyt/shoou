@@ -57,7 +57,10 @@ class ChangeLanguage extends StatelessWidget {
           const SizedBox(
             width: 8,
           ),
-          Text(LocaleKeys.changeLanguage.tr())
+          Text(
+            LocaleKeys.changeLanguage.tr(),
+            style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
+          )
         ],
       ),
     );

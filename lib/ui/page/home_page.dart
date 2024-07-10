@@ -7,7 +7,6 @@ import 'package:show_you/services/cubit/userBlog/user_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_state.dart';
 import 'package:show_you/services/cubit/userPhoto/user_photo_cubit.dart';
 import 'package:show_you/ui/page/user_account_page.dart';
-import 'package:show_you/ui/page/user_profile_page.dart';
 import 'package:show_you/ui/view/users_blog_list.dart';
 
 class HomePage extends StatelessWidget {
