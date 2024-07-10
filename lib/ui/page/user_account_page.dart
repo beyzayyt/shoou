@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:show_you/data/localization/local_keys.dart';
+import 'package:show_you/data/models/saved_user_model.dart';
 import 'package:show_you/services/cubit/userBlog/user_add_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_add_blog_state.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_cubit.dart';
@@ -10,19 +12,23 @@ import 'package:show_you/services/cubit/userBlog/user_blog_state.dart';
 import 'package:show_you/services/cubit/userBlog/user_clear_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_clear_blog_state.dart';
 import 'package:show_you/ui/view/loading_animation.dart';
+import 'package:show_you/ui/view/userProfile/change_language.dart';
+import 'package:show_you/ui/view/userProfile/logout_edit.dart';
+import 'package:show_you/ui/view/userProfile/user_profile_options.dart';
 import 'package:show_you/ui/view/users_blog_list.dart';
 
-class BlogPage extends StatefulWidget {
-  const BlogPage({super.key});
+class UserAccountPage extends StatefulWidget {
+  const UserAccountPage({super.key});
 
   @override
-  State<BlogPage> createState() => _BlogPageState();
+  State<UserAccountPage> createState() => _UserAccountPageState();
 }
 
-class _BlogPageState extends State<BlogPage> {
+class _UserAccountPageState extends State<UserAccountPage> {
   bool isSelected = false;
   List selectedList = [];
   List temporaryBlog = [];
+  SavedUserModel savedUserModel = SavedUserModel();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +75,86 @@ class _BlogPageState extends State<BlogPage> {
                   }
                 }),
               ],
-              child: Column(children: [
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Center(
+                  child: Stack(alignment: Alignment.topCenter, children: [
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: ValueListenableBuilder(
+                        valueListenable: Hive.box('userprofile').listenable(),
+                        builder: (context, box, child) {
+                          return Column(
+                            children: [
+                              Padding(
+                                  padding: const EdgeInsets.only(top: 50.0),
+                                  child: box.get('profilePhotoUrl') == null || box.get('profilePhotoUrl') == ""
+                                      ? SvgPicture.asset(
+                                          'assets/image/person_asset.svg',
+                                        )
+                                      : CircleAvatar(
+                                          radius: 70,
+                                          backgroundImage: NetworkImage(box.get('profilePhotoUrl')),
+                                        )),
+                              Text(
+                                box.isEmpty ? LocaleKeys.accountnamedescription.tr() : box.get('userName'),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Color.fromRGBO(66, 27, 115, 1),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ]),
+                ),
+                UserProfileEdit(
+                  savedUserModel: savedUserModel,
+                  onSubmit: (SavedUserModel value) => {
+                    setState(() {
+                      savedUserModel = value;
+                    })
+                  },
+                ),
+                LogOut(
+                  savedUserModel: savedUserModel,
+                ),
+                ChangeLanguage(savedUserModel: savedUserModel),
+                BlocBuilder<UserShowBlogCubit, UserShowBlogState>(builder: (context, state) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      InkWell(
+                          onTap: () async {
+                            await context.read<UserClearBlogCubit>().clearUserBlog(userid);
+                          },
+                          child: Text(
+                            LocaleKeys.clearAllBlogs.tr(),
+                            style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
+                          )),
+                      InkWell(
+                          onTap: () async {
+                            var result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => CreateBlogPage(userid: userid)),
+                            );
+                            if (context.mounted && result != null) context.read<UserShowBlogCubit>().showUserBlog(userid);
+                          },
+                          child: Text(
+                            LocaleKeys.addNewBlog.tr(),
+                            style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
+                          )),
+                      InkWell(
+                          onTap: () =>
+                              context.read<UserClearBlogCubit>().clearUserBlogItemService(selectedList, userid).whenComplete(() => selectedList = []),
+                          child: Text(
+                            LocaleKeys.chooseAndDeleteItem.tr(),
+                            style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
+                          )),
+                    ],
+                  );
+                }),
                 BlocConsumer<UserShowBlogCubit, UserShowBlogState>(
                   builder: (context, state) {
                     if (state is ShowUserBlogCompliting) {
@@ -82,36 +167,6 @@ class _BlogPageState extends State<BlogPage> {
                   },
                   listener: (BuildContext context, UserShowBlogState state) {},
                 ),
-                BlocBuilder<UserShowBlogCubit, UserShowBlogState>(builder: (context, state) {
-                  return Row(
-                    children: [
-                      Column(
-                        children: [
-                          ElevatedButton(
-                              onPressed: () => context.read<UserClearBlogCubit>().clearUserBlog(userid), child: Text(LocaleKeys.clearAllBlogs.tr())),
-                          const SizedBox(
-                            width: 16,
-                          ),
-                          ElevatedButton(
-                              onPressed: () async {
-                                var result = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => CreateBlogPage(userid: userid)),
-                                );
-                                if (context.mounted && result != null) context.read<UserShowBlogCubit>().showUserBlog(userid);
-                              },
-                              child: Text(LocaleKeys.addNewBlog.tr())),
-                          ElevatedButton(
-                              onPressed: () => context
-                                  .read<UserClearBlogCubit>()
-                                  .clearUserBlogItemService(selectedList, userid)
-                                  .whenComplete(() => selectedList = []),
-                              child: Text(LocaleKeys.chooseAndDeleteItem.tr()))
-                        ],
-                      ),
-                    ],
-                  );
-                }),
               ]),
             ),
           );

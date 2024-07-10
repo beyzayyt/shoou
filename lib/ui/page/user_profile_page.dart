@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:show_you/data/localization/local_keys.dart';
 import 'package:show_you/data/models/saved_user_model.dart';
 import 'package:show_you/services/cubit/userPhoto/user_photo_cubit.dart';
+import 'package:show_you/ui/page/user_account_page.dart';
 import 'package:show_you/ui/page/home_page.dart';
 import 'package:show_you/ui/view/userProfile/change_language.dart';
 import 'package:show_you/ui/view/userProfile/logout_edit.dart';
@@ -41,9 +42,16 @@ class _UserProfilePageState extends State<UserProfilePage> {
       appBar: AppBar(
         title: Text(
           LocaleKeys.myAccount.tr(),
+          style: TextStyle(
+            fontSize: 20,
+            color: Theme.of(context).primaryColor,
+          ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).primaryColor,
+          ),
           onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const HomePage()),
@@ -78,7 +86,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
                             box.isEmpty ? LocaleKeys.accountnamedescription.tr() : box.get('userName'),
                             style: const TextStyle(
                               fontSize: 16,
-                              // fontStyle: FontStyle.italic,
                               color: Color.fromRGBO(66, 27, 115, 1),
                             ),
                           ),
@@ -89,7 +96,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 ),
               ]),
             ),
-            UserProfileOptions(
+            UserProfileEdit(
               savedUserModel: savedUserModel,
               onSubmit: (SavedUserModel value) => {
                 setState(() {
@@ -100,7 +107,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             const SizedBox(
               height: 50,
             ),
-            LogOutandEdit(
+            LogOut(
               savedUserModel: savedUserModel,
             ),
             ChangeLanguage(savedUserModel: savedUserModel)

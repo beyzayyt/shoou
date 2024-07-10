@@ -6,6 +6,7 @@ import 'package:show_you/data/localization/local_keys.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_state.dart';
 import 'package:show_you/services/cubit/userPhoto/user_photo_cubit.dart';
+import 'package:show_you/ui/page/user_account_page.dart';
 import 'package:show_you/ui/page/user_profile_page.dart';
 import 'package:show_you/ui/view/users_blog_list.dart';
 
@@ -63,7 +64,7 @@ class HomePage extends StatelessWidget {
                           onTap: () async {
                             await Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const UserProfilePage()),
+                              MaterialPageRoute(builder: (context) => const UserAccountPage()),
                             );
                             if (context.mounted) context.read<UserShowBlogCubit>().showUserBlog(box.get('userid'));
                           },

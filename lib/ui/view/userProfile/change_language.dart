@@ -51,7 +51,15 @@ class ChangeLanguage extends StatelessWidget {
             });
       },
       color: Theme.of(context).primaryColor,
-      icon: const Icon(Icons.language),
+      icon: Row(
+        children: [
+          const Icon(Icons.language),
+          const SizedBox(
+            width: 8,
+          ),
+          Text(LocaleKeys.changeLanguage.tr())
+        ],
+      ),
     );
   }
 }

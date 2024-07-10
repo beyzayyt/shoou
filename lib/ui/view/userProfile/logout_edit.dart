@@ -8,13 +8,13 @@ import 'package:show_you/services/cubit/authentication/authentication_state.dart
 import 'package:show_you/ui/page/authentication_page.dart';
 
 // ignore: must_be_immutable
-class LogOutandEdit extends StatelessWidget {
-  LogOutandEdit({super.key, required this.savedUserModel});
+class LogOut extends StatelessWidget {
+  LogOut({super.key, required this.savedUserModel});
   SavedUserModel? savedUserModel;
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.only(left: 12.0, bottom: 12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
