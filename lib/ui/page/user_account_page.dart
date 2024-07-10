@@ -12,6 +12,9 @@ import 'package:show_you/services/cubit/userBlog/user_blog_state.dart';
 import 'package:show_you/services/cubit/userBlog/user_clear_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_clear_blog_state.dart';
 import 'package:show_you/ui/view/loading_animation.dart';
+import 'package:show_you/ui/view/userProfile/change_language.dart';
+import 'package:show_you/ui/view/userProfile/logout_edit.dart';
+import 'package:show_you/ui/view/userProfile/user_profile_options.dart';
 import 'package:show_you/ui/view/users_blog_list.dart';
 
 class UserAccountPage extends StatefulWidget {
@@ -29,7 +32,30 @@ class _UserAccountPageState extends State<UserAccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const SizedBox(
+              height: 70,
+            ),
+            UserProfileEdit(
+              savedUserModel: savedUserModel,
+              onSubmit: (SavedUserModel value) => {
+                setState(() {
+                  savedUserModel = value;
+                })
+              },
+            ),
+            LogOut(
+              savedUserModel: savedUserModel,
+            ),
+            ChangeLanguage(savedUserModel: savedUserModel),
+          ],
+        ),
+      ),
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         forceMaterialTransparency: true,
         centerTitle: true,
         title: Text(LocaleKeys.myAccount.tr(),
@@ -140,18 +166,6 @@ class _UserAccountPageState extends State<UserAccountPage> {
                     ),
                   );
                 }),
-                // UserProfileEdit(
-                //   savedUserModel: savedUserModel,
-                //   onSubmit: (SavedUserModel value) => {
-                //     setState(() {
-                //       savedUserModel = value;
-                //     })
-                //   },
-                // ),
-                // LogOut(
-                //   savedUserModel: savedUserModel,
-                // ),
-                // ChangeLanguage(savedUserModel: savedUserModel),
                 BlocConsumer<UserShowBlogCubit, UserShowBlogState>(
                   builder: (context, state) {
                     if (state is ShowUserBlogCompliting) {
