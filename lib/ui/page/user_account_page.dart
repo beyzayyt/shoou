@@ -215,10 +215,12 @@ class _UserAccountPageState extends State<UserAccountPage> {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             child: InkWell(
-                                onTap: () => context
-                                    .read<UserClearBlogCubit>()
-                                    .clearUserBlogItemService(selectedList, userid)
-                                    .whenComplete(() => selectedList = []),
+                                onTap: () => selectedList.isNotEmpty
+                                    ? context
+                                        .read<UserClearBlogCubit>()
+                                        .clearUserBlogItemService(selectedList, userid)
+                                        .whenComplete(() => selectedList = [])
+                                    : null,
                                 child: Center(
                                   child: Text(
                                     LocaleKeys.chooseAndDeleteItem.tr(),
