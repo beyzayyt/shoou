@@ -51,10 +51,12 @@ class _UserProfileState extends State<UserProfileFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 240, 220, 160),
       appBar: AppBar(
         title: Text(
           LocaleKeys.editMyAccount.tr(),
         ),
+        forceMaterialTransparency: true,
       ),
       body: Center(
         child: Padding(
@@ -94,8 +96,8 @@ class _UserProfileState extends State<UserProfileFormPage> {
                                           return Padding(
                                               padding: const EdgeInsets.only(top: 50.0),
                                               child: box.get('profilePhotoUrl').toString().isEmpty || box.get('profilePhotoUrl') == null
-                                                  ? SvgPicture.asset(
-                                                      'assets/image/person_asset.svg',
+                                                  ? const CircleAvatar(
+                                                      radius: 70,
                                                     )
                                                   : CircleAvatar(
                                                       radius: 70,
@@ -160,8 +162,13 @@ class _UserProfileState extends State<UserProfileFormPage> {
                                 builder: (context, state) {
                                   return ElevatedButton(
                                       style: ElevatedButton.styleFrom(),
-                                      onPressed: () => context.read<UserInformationCubit>().saveUserInformations(userName.text, userLastName.text,
-                                          userNickname.text, userMobilePhone.text, userBirthDate.text, profilePhotoUrl ?? ''),
+                                      onPressed: () => context.read<UserInformationCubit>().saveUserInformations(
+                                          userName.text,
+                                          userLastName.text,
+                                          userNickname.text,
+                                          userMobilePhone.text,
+                                          userBirthDate.text,
+                                          profilePhotoUrl ?? box.get('profilePhotoUrl') ?? ''),
                                       child: Text(
                                         LocaleKeys.save.tr(),
                                         style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),

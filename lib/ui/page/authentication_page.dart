@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:show_you/data/localization/local_keys.dart';
 import 'package:show_you/services/cubit/authentication/authentication_cubit.dart';
 import 'package:show_you/services/cubit/authentication/authentication_state.dart';
-import 'package:show_you/ui/page/user_profile_page.dart';
+import 'package:show_you/ui/page/user_account_page.dart';
 import 'package:show_you/ui/view/loading_animation.dart';
 import 'package:show_you/ui/view/login_register_logo.dart';
 import 'package:show_you/ui/view/reset_password.dart';
@@ -114,7 +114,7 @@ class _SignUpState extends State<AuthenticatePage> {
                       if (state is SignUpCompleted || state is SignInCompleted) {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const UserProfilePage()),
+                          MaterialPageRoute(builder: (context) => const UserAccountPage()),
                         );
                         if (state is SignUpCompleted && state.user.isNewUser) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(LocaleKeys.newuserdescription.tr())));

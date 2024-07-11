@@ -41,7 +41,7 @@ class _UsersBlogListState extends State<UserBlogList> {
                         child: Card(
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                           elevation: 2,
-                          color: Colors.white,
+                          color: Color.fromARGB(255, 239, 222, 171),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(

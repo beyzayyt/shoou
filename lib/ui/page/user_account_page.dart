@@ -11,6 +11,7 @@ import 'package:show_you/services/cubit/userBlog/user_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_blog_state.dart';
 import 'package:show_you/services/cubit/userBlog/user_clear_blog_cubit.dart';
 import 'package:show_you/services/cubit/userBlog/user_clear_blog_state.dart';
+import 'package:show_you/ui/page/home_page.dart';
 import 'package:show_you/ui/view/loading_animation.dart';
 import 'package:show_you/ui/view/userProfile/change_language.dart';
 import 'package:show_you/ui/view/userProfile/logout_edit.dart';
@@ -32,6 +33,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 245, 231, 192),
       endDrawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -63,6 +65,16 @@ class _UserAccountPageState extends State<UserAccountPage> {
               fontSize: 24,
               color: Theme.of(context).primaryColor,
             )),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).primaryColor,
+          ),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          ),
+        ),
       ),
       body: ValueListenableBuilder(
         valueListenable: Hive.box('userid').listenable(),
@@ -129,39 +141,93 @@ class _UserAccountPageState extends State<UserAccountPage> {
                 ),
                 BlocBuilder<UserShowBlogCubit, UserShowBlogState>(builder: (context, state) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 18.0),
+                    padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 16),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        InkWell(
-                            onTap: () async {
-                              await context.read<UserClearBlogCubit>().clearUserBlog(userid);
-                            },
-                            child: Text(
-                              LocaleKeys.clearAllBlogs.tr(),
-                              style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
-                            )),
-                        InkWell(
-                            onTap: () async {
-                              var result = await Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => CreateBlogPage(userid: userid)),
-                              );
-                              if (context.mounted && result != null) context.read<UserShowBlogCubit>().showUserBlog(userid);
-                            },
-                            child: Text(
-                              LocaleKeys.addNewBlog.tr(),
-                              style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
-                            )),
-                        InkWell(
-                            onTap: () => context
-                                .read<UserClearBlogCubit>()
-                                .clearUserBlogItemService(selectedList, userid)
-                                .whenComplete(() => selectedList = []),
-                            child: Text(
-                              LocaleKeys.chooseAndDeleteItem.tr(),
-                              style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
-                            )),
+                        Expanded(
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: const Color.fromRGBO(66, 27, 115, 1),
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: InkWell(
+                                onTap: () async {
+                                  var result = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => CreateBlogPage(userid: userid)),
+                                  );
+                                  if (context.mounted && result != null) context.read<UserShowBlogCubit>().showUserBlog(userid);
+                                },
+                                child: Center(
+                                  child: Text(
+                                    LocaleKeys.clearAllBlogs.tr(),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
+                                  ),
+                                )),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: const Color.fromRGBO(66, 27, 115, 1),
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: InkWell(
+                                onTap: () async {
+                                  var result = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => CreateBlogPage(userid: userid)),
+                                  );
+                                  if (context.mounted && result != null) context.read<UserShowBlogCubit>().showUserBlog(userid);
+                                },
+                                child: Center(
+                                  child: Text(
+                                    LocaleKeys.addNewBlog.tr(),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
+                                  ),
+                                )),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: const Color.fromRGBO(66, 27, 115, 1),
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: InkWell(
+                                onTap: () => context
+                                    .read<UserClearBlogCubit>()
+                                    .clearUserBlogItemService(selectedList, userid)
+                                    .whenComplete(() => selectedList = []),
+                                child: Center(
+                                  child: Text(
+                                    LocaleKeys.chooseAndDeleteItem.tr(),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(color: Color.fromRGBO(66, 27, 115, 1)),
+                                  ),
+                                )),
+                          ),
+                        ),
                       ],
                     ),
                   );
