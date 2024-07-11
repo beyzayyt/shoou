@@ -235,7 +235,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
                 BlocConsumer<UserShowBlogCubit, UserShowBlogState>(
                   builder: (context, state) {
                     if (state is ShowUserBlogCompliting) {
-                      return const LoadingAnimation();
+                      return const Center(child: LoadingAnimation());
                     } else if (state is ShowUserBlogCompleted && state.blogs != null) {
                       return Expanded(child: UserBlogList(selectedList: selectedList, blog: state.blogs ?? [], userid: userid));
                     } else {
