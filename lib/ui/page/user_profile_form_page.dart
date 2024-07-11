@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:show_you/data/localization/local_keys.dart';
@@ -54,10 +53,13 @@ class _UserProfileState extends State<UserProfileFormPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 240, 220, 160),
       appBar: AppBar(
-        title: Text(
-          LocaleKeys.editMyAccount.tr(),
-        ),
+        title: Text(LocaleKeys.editMyAccount.tr(),
+            style: TextStyle(
+              fontSize: 24,
+              color: Theme.of(context).primaryColor,
+            )),
         forceMaterialTransparency: true,
+        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
       ),
       body: Center(
         child: Padding(
