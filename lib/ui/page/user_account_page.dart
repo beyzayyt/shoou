@@ -33,7 +33,7 @@ class _UserAccountPageState extends State<UserAccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 245, 231, 192),
+      backgroundColor: const Color.fromARGB(255, 240, 220, 160),
       endDrawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -262,8 +262,15 @@ class CreateBlogPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 240, 220, 160),
       appBar: AppBar(
-        title: const Text('Create Blog Post'),
+        title: Text(LocaleKeys.createBlog.tr(),
+            style: TextStyle(
+              fontSize: 24,
+              color: Theme.of(context).primaryColor,
+            )),
+        forceMaterialTransparency: true,
+        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -282,21 +289,32 @@ class CreateBlogPage extends StatelessWidget {
               builder: (context, state) {
                 return Column(
                   children: [
-                    TextField(
-                      controller: titleController,
-                      decoration: const InputDecoration(
-                        labelText: 'Title',
-                      ),
-                    ),
+                    TextFormField(
+                        maxLines: null,
+                        controller: titleController,
+                        decoration: InputDecoration(
+                          hintText: LocaleKeys.createTitle.tr(),
+                          hintStyle: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white), borderRadius: BorderRadius.all(Radius.circular(10))),
+                        )),
                     const SizedBox(height: 16.0),
-                    TextField(
-                      controller: contentController,
-                      maxLines: null,
-                      keyboardType: TextInputType.multiline,
-                      decoration: const InputDecoration(
-                        labelText: 'Content',
-                      ),
-                    ),
+                    TextFormField(
+                        controller: contentController,
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
+                        decoration: InputDecoration(
+                          hintText: LocaleKeys.createContent.tr(),
+                          hintStyle: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white),
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white), borderRadius: BorderRadius.all(Radius.circular(10))),
+                        )),
                     const SizedBox(height: 16.0),
                     ValueListenableBuilder(
                       valueListenable: Hive.box('userprofile').listenable(),
@@ -308,7 +326,7 @@ class CreateBlogPage extends StatelessWidget {
                                 .read<UserAddBlogCubit>()
                                 .addUserBlog(titleController.text.trim(), contentController.text.trim(), userid, userProfilePhoto);
                           },
-                          child: const Text('Submit'),
+                          child: Text(LocaleKeys.save.tr()),
                         );
                       },
                     ),

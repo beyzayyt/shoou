@@ -30,6 +30,7 @@ class HomePage extends StatelessWidget {
           child: BlocBuilder<UserShowBlogCubit, UserShowBlogState>(
             builder: (context, stateshowblog) {
               return Scaffold(
+                backgroundColor: const Color.fromARGB(255, 240, 220, 160),
                 appBar: AppBar(
                   forceMaterialTransparency: true,
                   centerTitle: false,

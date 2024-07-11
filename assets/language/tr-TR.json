@@ -40,5 +40,8 @@
         "apply": "Uygula",
         "goodMorning": "Günaydın",
         "goodAfternoon": "İyi Günler",
-        "goodEvening": "İyi Akşamlar"
+        "goodEvening": "İyi Akşamlar",
+        "createBlog": "Blog Oluştur",
+        "createTitle": "Başlık oluştur",
+        "createContent": "İçerik oluştur"
 }

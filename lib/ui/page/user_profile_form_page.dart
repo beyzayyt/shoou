@@ -51,6 +51,7 @@ class _UserProfileState extends State<UserProfileFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: const Color.fromARGB(255, 245, 231, 192),
       backgroundColor: const Color.fromARGB(255, 240, 220, 160),
       appBar: AppBar(
         title: Text(LocaleKeys.editMyAccount.tr(),
@@ -124,21 +125,21 @@ class _UserProfileState extends State<UserProfileFormPage> {
                           ),
                           const SizedBox(height: 24),
                           UserInformationTextField(
-                            userName: userName,
+                            controller: userName,
                             hintText: LocaleKeys.userName.tr(),
                           ),
                           UserInformationTextField(
-                            userName: userLastName,
+                            controller: userLastName,
                             hintText: LocaleKeys.userLastName.tr(),
                           ),
-                          UserInformationTextField(userName: userNickname, hintText: LocaleKeys.userNickname.tr()),
+                          UserInformationTextField(controller: userNickname, hintText: LocaleKeys.userNickname.tr()),
                           UserInformationTextField(
-                            userName: userMobilePhone,
+                            controller: userMobilePhone,
                             hintText: LocaleKeys.userMobilePhone.tr(),
                             keyboardType: TextInputType.phone,
                           ),
                           UserInformationTextField(
-                            userName: userBirthDate,
+                            controller: userBirthDate,
                             hintText: LocaleKeys.userBirthDate.tr(),
                             keyboardType: TextInputType.datetime,
                           ),
@@ -211,9 +212,9 @@ class _UserProfileState extends State<UserProfileFormPage> {
 }
 
 class UserInformationTextField extends StatelessWidget {
-  const UserInformationTextField({super.key, required this.userName, required this.hintText, this.keyboardType, this.initialValue});
+  const UserInformationTextField({super.key, required this.controller, required this.hintText, this.keyboardType, this.initialValue});
 
-  final TextEditingController userName;
+  final TextEditingController controller;
   final String hintText;
   final TextInputType? keyboardType;
   final String? initialValue;
@@ -225,16 +226,27 @@ class UserInformationTextField extends StatelessWidget {
       child: TextFormField(
         initialValue: initialValue,
         keyboardType: keyboardType,
-        controller: userName,
+        controller: controller,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white),
+          hintStyle: Theme.of(context).textTheme.titleMedium!.copyWith(color: const Color.fromRGBO(66, 27, 115, 1)),
           focusedBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: BorderSide(
+              color: Color.fromRGBO(66, 27, 115, 1),
+            ),
           ),
-          enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white), borderRadius: BorderRadius.all(Radius.circular(10))),
+          enabledBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Color.fromRGBO(66, 27, 115, 1)), borderRadius: BorderRadius.all(Radius.circular(10))),
         ),
       ),
     );
   }
 }
+
+  // decoration: BoxDecoration(
+  //                             border: Border.all(
+  //                               color: const Color.fromRGBO(66, 27, 115, 1),
+  //                               width: 1.0,
+  //                             ),
+  //                             borderRadius: BorderRadius.circular(8.0),
+  //                           ),

@@ -35,5 +35,8 @@
     "apply": "Apply",
     "goodMorning": "Good Morning",
     "goodAfternoon": "Good Afternoon",
-    "goodEvening": "Good Evening"
+    "goodEvening": "Good Evening",
+    "createBlog": "Create Blog",
+    "createTitle": "Create title",
+    "createContent": "Create content"
 }

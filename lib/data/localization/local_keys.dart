@@ -41,5 +41,7 @@ abstract class LocaleKeys {
   static const goodMorning = 'goodMorning';
   static const goodAfternoon = 'goodAfternoon';
   static const goodEvening = 'apply';
-
+  static const createBlog = 'createBlog';
+  static const createTitle = 'createTitle';
+  static const createContent = 'createContent';
 }
