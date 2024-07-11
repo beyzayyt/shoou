@@ -12,6 +12,7 @@ import 'package:show_you/services/cubit/userInfo/user_information_cubit.dart';
 import 'package:show_you/services/cubit/userInfo/user_information_state.dart';
 import 'package:show_you/services/cubit/userPhoto/user_photo_cubit.dart';
 import 'package:show_you/services/cubit/userPhoto/user_photo_state.dart';
+import 'package:show_you/ui/view/login_register_logo.dart';
 
 // ignore: must_be_immutable
 class UserProfileFormPage extends StatefulWidget {
@@ -75,56 +76,46 @@ class _UserProfileState extends State<UserProfileFormPage> {
                             create: (context) => UserPhotoCubit(),
                             child: BlocBuilder<UserPhotoCubit, UserPhotoState>(
                               builder: (context, state) {
-                                return Stack(
-                                  children: [
-                                    BlocListener<UserPhotoCubit, UserPhotoState>(
-                                      listener: (context, state) {
-                                        if (state is UploadUserPhotoCompleted && state.downloadUrl != null) {
-                                          setState(() {
-                                            profilePhotoUrl = state.downloadUrl!;
-                                          });
-                                        }
-                                      },
-                                      child: BlocBuilder<UserPhotoCubit, UserPhotoState>(
-                                        builder: (bcontext, state) {
-                                          if (state is UploadUserPhotoCompleted && state.downloadUrl != null) {
-                                            return CircleAvatar(
-                                              radius: 70,
-                                              backgroundImage: NetworkImage(state.downloadUrl!),
-                                            );
-                                          }
-                                          return Padding(
-                                              padding: const EdgeInsets.only(top: 50.0),
-                                              child: box.get('profilePhotoUrl').toString().isEmpty || box.get('profilePhotoUrl') == null
-                                                  ? const CircleAvatar(
-                                                      radius: 70,
-                                                    )
-                                                  : CircleAvatar(
-                                                      radius: 70,
-                                                      backgroundImage: NetworkImage(box.get('profilePhotoUrl')),
-                                                    ));
-                                        },
-                                      ),
-                                    ),
-                                    Positioned(
-                                      right: 0,
-                                      bottom: 0,
-                                      child: Container(
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white,
-                                        ),
-                                        padding: const EdgeInsets.all(8),
-                                        child: InkWell(
-                                          onTap: () => getImage(context),
-                                          child: const Icon(
-                                            Icons.camera_alt,
-                                            size: 20,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                return BlocListener<UserPhotoCubit, UserPhotoState>(
+                                  listener: (context, state) {
+                                    if (state is UploadUserPhotoCompleted && state.downloadUrl != null) {
+                                      setState(() {
+                                        profilePhotoUrl = state.downloadUrl!;
+                                      });
+                                    }
+                                  },
+                                  child: BlocBuilder<UserPhotoCubit, UserPhotoState>(
+                                    builder: (bcontext, state) {
+                                      if (state is UploadUserPhotoCompleted && state.downloadUrl != null) {
+                                        return CircleAvatar(
+                                          radius: 70,
+                                          backgroundImage: NetworkImage(state.downloadUrl!),
+                                        );
+                                      }
+                                      return Padding(
+                                          padding: const EdgeInsets.only(top: 50.0),
+                                          child: box.get('profilePhotoUrl').toString().isEmpty || box.get('profilePhotoUrl') == null
+                                              ? Stack(children: [
+                                                  const LoginRegisterTitleLogo(),
+                                                  Positioned(
+                                                    top: 90,
+                                                    left: 150,
+                                                    child: InkWell(
+                                                      onTap: () => getImage(context),
+                                                      child: const Icon(
+                                                        Icons.add_a_photo,
+                                                        size: 20,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ])
+                                              : CircleAvatar(
+                                                  radius: 70,
+                                                  backgroundImage: NetworkImage(box.get('profilePhotoUrl')),
+                                                ));
+                                    },
+                                  ),
                                 );
                               },
                             ),
